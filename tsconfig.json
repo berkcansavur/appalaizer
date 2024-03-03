@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
-      "target": "es5",
-      "module": "commonjs",
-      "strict": true
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"]
+  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  }
 }

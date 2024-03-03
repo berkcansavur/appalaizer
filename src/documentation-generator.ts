@@ -18,15 +18,15 @@ export class DocumentationGenerator {
     let tree = `${prefix ? prefix + '/' : ''}${name}\n`;
 
     for (const file of files) {
-        const filePath = path.join(dir, file);
-        if (file === 'node_modules') {
-            continue;
-        }
-        if (fs.statSync(filePath).isDirectory()) {
-            tree += this.generateDirectoryTree(filePath, `${prefix}  `);
-        } else {
-            tree += `${prefix}  ${file}\n`;
-        }
+      const filePath = path.join(dir, file);
+      if (file === 'node_modules') {
+        continue;
+      }
+      if (fs.statSync(filePath).isDirectory()) {
+        tree += this.generateDirectoryTree(filePath, `${prefix}  `);
+      } else {
+        tree += `${prefix}  ${file}\n`;
+      }
     }
 
     return tree;

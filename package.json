@@ -4,14 +4,15 @@
   "description": "Package for analysing structure and relations of existing application",
   "main": "src/index.ts",
   "scripts": {
-    "test": "jest"
-},
-"devDependencies": {
-  "@types/jest": "^27.4.0",
-  "jest": "^27.4.7",
-  "ts-jest": "^27.1.2",
-  "typescript": "^4.5.5"
-},
+    "test": "jest --config=./jest.config.ts"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "jest": "^27.4.7",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.5.5"
+  },
   "author": "Berkcan Şavur",
   "license": "ISC"
 }
