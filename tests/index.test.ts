@@ -4,7 +4,7 @@ import * as fs from 'fs';
 describe('Documentation Generator Tests', () => {
   test('Generate Documentation Test', () => {
     const generator = new DocumentationGenerator();
-    generator.generateDocumentation('./src', './test-output');
+    generator.generateDocumentation('../src', './test-output');
 
     // Oluşturulan belgelerin varlığını kontrol et
     expect(fs.existsSync('./test-output')).toBe(true);

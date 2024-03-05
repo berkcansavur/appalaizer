@@ -1,8 +1,8 @@
 import { FileTypes } from "../constants/enum";
 
 export class FilesLogic {
-  static isFolder(fileType: FileTypes) : boolean {
-    return fileType === FileTypes.Folder
+  static isFolder(fileName: string) : boolean {
+    return !fileName.includes('.');
   }
 
   static isJavaScriptFile(fileType: FileTypes) : boolean {
@@ -13,6 +13,7 @@ export class FilesLogic {
     return fileType === FileTypes.TypeScript
   }
   static isTypeJson(fileType: FileTypes) : boolean {
-    return fileType === FileTypes.Json
+    return fileType === FileTypes.JSON
   }
+
 }

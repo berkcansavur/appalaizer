@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { FileService } from './files/file.service';
 import { DocumentationService } from './documentations/documentation.service';
-import { FileTypes } from './constants/enum';
 import { FilesLogic } from './logic/file.logic';
+import { FolderType } from './types/types';
 
 export class DocumentationGenerator {
   private fileService: FileService;
@@ -15,27 +15,64 @@ export class DocumentationGenerator {
   }
 
   generateDocumentation(rootDir: string, outputDir: string) {
-    const { tree, files } = this.generateTree(rootDir);
-    this.createMarkdownFiles(tree, files, outputDir);
+    const { tree, files } = this.generateTree(rootDir,['node_modules','git/objects']);
   }
 
-  private generateTree(rootDir: string): { tree: string, files: string[] } {
+  private generateTree(rootDir: string, unwantedDirectories?: string[]): { tree: string, files: string[] } {
     console.log(this.generateDirectoryTree(rootDir, ''));
-    return this.generateDirectoryTree(rootDir, '');
+    return this.generateDirectoryTree(rootDir, '', unwantedDirectories);
+  }
+  filterBranches (dir: string) {
+    const branches = fs.readdirSync(dir);
+    const folders : string[] = [];
+    const files: string[] = [];
+    branches.map((branch) => {
+      const filePath  = this.getToNamespacePath(branch);
+      if (FilesLogic.isFolder(filePath)) {
+        folders.push(branch);
+      }
+      files.push(branch);
+    });
+    return {folders, files};
+  }
+  constructFolderStructure(folderName: string): FolderType {
+    const files = fs.readdirSync(folderName);
+    const folder: FolderType = {folderName, files}; 
+    return folder;
+  }
+  getToNamespacePath(rootDir: string): string {
+    // returns like  src/constants
+    return path.toNamespacedPath(rootDir);    
+  }
+  generateMarkdownFiles(foldersWithFiles: [Map<string, string[]>]){
+    foldersWithFiles.map((folder) =>{
+    })
   }
 
-  private generateDirectoryTree(dir: string, prefix: string): { tree: string, files: string[] } {
+  private generateDirectoryTree(dir: string, prefix: string, unwantedDirectories?: string[]): { tree: string, files: string[] } {
     const name = path.basename(dir);
     const files = fs.readdirSync(dir);
+    console.log('files: ' + files);
+    files.map((file) =>{
+      const toNamespacedPath = path.toNamespacedPath(file)
+      console.log('toNamespacedPath: ' + toNamespacedPath);
+      if (toNamespacedPath.includes('.')) {
+        console.log('this is not a folder');
+      }
+    })
+    
+    const dirname = path.dirname(dir)
+    console.log('dirname: ' + dirname);
     let tree = `${prefix ? prefix + '/' : ''}${name}\n`;
     let fileNames: string[] = [];
 
     for (const file of files) {
         const filePath = path.join(dir, file);
-        if (file === 'node_modules') {
+        if (unwantedDirectories?.includes(file) || file === 'node_modules') {
             continue;
         }
-        if (fs.statSync(filePath).isDirectory()) {
+        const stats = fs.statSync(filePath);
+        if (stats.isDirectory()) {
             const subdir = this.generateDirectoryTree(filePath, `${prefix}  `);
             tree += subdir.tree;
             fileNames = fileNames.concat(subdir.files);
@@ -49,42 +86,5 @@ export class DocumentationGenerator {
     return { tree, files: fileNames };
 }
 
-private createMarkdownFiles(tree: string, files: string[], outputDir: string) {
-  const lines = tree.split('\n');
-  let currentDir = outputDir;
 
-  for (const line of lines) {
-    const isDirectory = line.endsWith('/');
-    const name = isDirectory ? line.slice(0, -1) : line;
-
-    if (isDirectory) {
-      currentDir = path.join(currentDir, name);
-      if (!fs.existsSync(currentDir)) {
-        fs.mkdirSync(currentDir, { recursive: true });
-      }
-    } else {
-      const filePath = path.join(currentDir, name + '.md');
-      const fileContent = this.generateFileContent(name, files);
-      fs.writeFileSync(filePath, fileContent);
-    }
-  }
-}
-
-
-private generateFileContent(name: string, files: string[]): string {
-    let content = '';
-    const fileType = this.fileService.getFileType(name);
-
-    if (FilesLogic.isFolder(fileType)) {
-        content += 'Documentation:\n\n';
-        content += 'This part is not implemented yet\n\n';
-        const listedFiles = this.fileService.generateFilesList(files);
-        content += listedFiles;
-    } else if (FilesLogic.isJavaScriptFile(fileType) || FilesLogic.isTypeScriptFile(fileType)) {
-        content += 'Documentation:\n\n';
-        content += 'This part is not implemented yet\n\n';
-    }
-
-    return content;
-  }
 }
