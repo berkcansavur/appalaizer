@@ -9,7 +9,7 @@ function generateDocs(dirPath: string, outputDir: string) {
         const filePath = path.join(dirPath, fileName);
 
         if (file.isDirectory()) {
-            const markdown = generateMarkdown(filePath, fileName);
+            const markdown = generateMarkdown(filePath);
             const outputFileName = fileName + ".md";
             const outputPath = path.join(outputDir, "folders", outputFileName);
             fs.writeFileSync(outputPath, markdown);
@@ -26,13 +26,13 @@ function generateDocs(dirPath: string, outputDir: string) {
 
     // Giriş dosyası için .md dosyası oluştur
     const dirName = path.basename(dirPath);
-    const markdown = generateMarkdown(dirPath, dirName);
+    const markdown = generateMarkdown(dirPath);
     const outputFileName = dirName + ".md";
     const outputPath = path.join(outputDir, "folders", outputFileName);
     fs.writeFileSync(outputPath, markdown);
 }
 
-function generateMarkdown(dirPath: string, dirName: string): string {
+function generateMarkdown(dirPath: string,): string {
     let markdown = `Files:\n`;
 
     const files = fs.readdirSync(dirPath, { withFileTypes: true });

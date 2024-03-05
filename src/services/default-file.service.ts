@@ -7,7 +7,7 @@ export class DefaultFileService implements FileHandler {
       const content = fs.readFileSync(filePath, 'utf-8');
       const outputFileName = path.basename(filePath) + ".md";
       const outputPath = path.join(outputDir, "files", outputFileName);
-      const markdown = `content:\n\`\`\`\n${content}\n\`\`\``;
+      const markdown = `Content:\n\`\`\`\n${content}\n\`\`\``;
       fs.writeFileSync(outputPath, markdown);
   }
 }
