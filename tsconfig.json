@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2016",
     "module": "commonjs",
-    "strict": true
-  },
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    }
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": ["src/*"],
+      "modules/*": ["src/modules/*"]
+    },
+    "outDir": "./dist"
   }
 }

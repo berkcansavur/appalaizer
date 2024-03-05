@@ -17,7 +17,7 @@ function generateDocs(dirPath: string, outputDir: string) {
             generateDocs(filePath, outputDir); // Alt klasörler için tekrar çağır
         } else {
             const content = fs.readFileSync(filePath, 'utf-8');
-            const outputFileName = fileName.replace(/\.[^/.]+$/, "") + ".md";
+            const outputFileName = fileName + ".md";
             const outputPath = path.join(outputDir, "files", outputFileName);
             const markdown = `content:\n\`\`\`\n${content}\n\`\`\``;
             fs.writeFileSync(outputPath, markdown);
