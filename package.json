@@ -39,7 +39,6 @@
   "author": "Berkcan Şavur",
   "license": "ISC",
   "dependencies": {
-    "openai": "^4.28.4",
-    "openai-api": "^1.3.1"
+    "openai": "^4.28.4"
   }
 }
