@@ -4,8 +4,8 @@ export class MarkdownService {
       let markdown = `Files:\n`;
       const files = fs.readdirSync(dirPath, { withFileTypes: true });
       files.forEach(file => {
-          const fileName = file.name;
-          markdown += `- [[ ${fileName} ]]\n`;
+        const fileName = file.name;
+        markdown += `- [[ ${fileName} ]]\n`;
       });
       markdown += "\n";
       return markdown;

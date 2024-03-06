@@ -10,4 +10,9 @@ export class DefaultFileService implements FileHandler {
       const markdown = `Content:\n\`\`\`\n${content}\n\`\`\``;
       fs.writeFileSync(outputPath, markdown);
   }
+  async writeAnalysisResultToFile(filePath: string, analysisResult: string): Promise<void> {
+    const resultFilePath = filePath.replace('.md', '_analysis_result.md');
+    await fs.promises.writeFile(resultFilePath, analysisResult, 'utf-8');
+    console.log(`Analysis successfully saved to the file: ${resultFilePath}`);
+  }
 }
