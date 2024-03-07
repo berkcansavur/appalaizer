@@ -14,7 +14,6 @@ async function analyzeProjectFiles() {
     new ProjectTreeService(),
     new DefaultFileService()
   );
-  console.log(`analysis service is created: ${analysisService}`)
   await analysisService.analyzeProjectFiles(projectPath).then(()=> {
     console.log('analyze is completed');
   }).catch((error) => {
