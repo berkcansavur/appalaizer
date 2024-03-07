@@ -10,9 +10,22 @@ export class DefaultFileService implements FileHandler {
       const markdown = `Content:\n\`\`\`\n${content}\n\`\`\``;
       fs.writeFileSync(outputPath, markdown);
   }
+
   async writeAnalysisResultToFile(filePath: string, analysisResult: string): Promise<void> {
-    const resultFilePath = filePath.replace('.md', '_analysis_result.md');
-    await fs.promises.writeFile(resultFilePath, analysisResult, 'utf-8');
-    console.log(`Analysis successfully saved to the file: ${resultFilePath}`);
+    try {
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
+      const updatedContent = this.updateFileContent(fileContent, analysisResult);
+      fs.writeFileSync(filePath, updatedContent, 'utf-8');
+      console.log(`Analysis successfully saved to the file: ${filePath}`);
+    } catch (error) {
+      console.error('An error occurred while writing analysis result to file:', error);
+      throw error;
+    }
+  }
+
+  private updateFileContent(fileContent: string, analysisResult: string): string {
+    const documentationHeader = 'Documentation:';
+    const updatedContent = `${documentationHeader}\n${analysisResult}\n\n${fileContent}`;
+    return updatedContent;
   }
 }

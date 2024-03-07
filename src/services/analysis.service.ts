@@ -13,7 +13,7 @@ export class AnalysisService {
 
   public async analyzeProjectFiles(projectPath: string): Promise<void> {
     try {
-      const outputDir = path.join(projectPath, 'docs'); // Değişiklik: 'output' yerine 'docs'
+      const outputDir = path.join(projectPath, 'docs');
       this.projectTreeService.generateProjectTree(projectPath, outputDir);
       console.log('Project tree is generated and markdown files are created.');
       await this.analyzeFilesInOutputDirectory(outputDir);
@@ -65,6 +65,6 @@ export class AnalysisService {
   }
 
   private createPrompt(fileContent: string): string {
-    return `Dosya İçeriği Analizi:\n${fileContent}\n\n`;
+    return `Aşağıda bir projenin içerdiği dosyalardan birisi, Content içerisinde verilen alanın ne işe yaradığını, dependencylerini, ve yapılabilecek kod iyileştirmelerini ayrı ayrı başlıklar altında döndür ve döndüreceğin cevapta açıklamalar bir yana kdo bloğu önerilerini de eklemeye özen göster ve bu işlemi olabildiğince hatasız olarak yerine getir. :\n${fileContent}\n\n`;
   }
 }

@@ -26,8 +26,7 @@ export class GptService {
         messages: [
           { role: "user", content: prompt }
         ],
-        model: "gpt-3.5-turbo-instruct",
-        response_format: { type: "json_object" }
+        model: "gpt-3.5-turbo",
       });
       console.log(`Response: ${response.choices[0]}`)
       if (response.choices && response.choices.length > 0) {
