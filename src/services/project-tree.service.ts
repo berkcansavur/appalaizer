@@ -1,24 +1,66 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { FileHandlerFactory } from '../factories/file-handler.factory';
+import { DirectoryInfo } from '../constants/types';
+
 export class ProjectTreeService {
   generateProjectTree(inputPath: string, outputDir: string): void {
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
-    }
-    if (!fs.existsSync(path.join(outputDir, 'files'))) {
-      fs.mkdirSync(path.join(outputDir, 'files'));
-    }
-    
-    if (!fs.existsSync(path.join(outputDir, 'folders'))) {
-      fs.mkdirSync(path.join(outputDir, 'folders'));
-    }
-      const files = fs.readdirSync(inputPath, { withFileTypes: true });
-      files.forEach(file => {
-          const filePath = path.join(inputPath, file.name);
-          const fileType = file.isDirectory() ? 'folder' : 'file';
-          const fileHandler = FileHandlerFactory.getFileHandler(fileType);
-          fileHandler.handleFile(filePath, outputDir);
+    // Öncelikle, docs, files ve folders dizinlerini oluştur
+    this.createDocsStructure(outputDir);
+
+    const map = this.createMap(inputPath);
+
+    map.forEach(({ name, isFolder, realPath }) => {
+      if (this.shouldIgnore(name)) return;
+      console.log('Real path: ', realPath);
+
+      //const safeName = name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      //console.log('Safe Name: ', safeName);
+      const outputItemPath = path.join(outputDir, isFolder ? 'folders' : 'files');
+      console.log('Output Item Path: ', outputItemPath);
+      const fileHandler = FileHandlerFactory.getFileHandler(isFolder ? 'folder' : 'file');
+      fileHandler.handleFile(realPath, outputItemPath);
+    });
+  }
+
+  createDocsStructure(outputDir: string): void {
+    const filesPath = path.join(outputDir, 'files');
+    const foldersPath = path.join(outputDir, 'folders');
+
+    [filesPath, foldersPath].forEach(dir => {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+    });
+  }
+
+  createMap(inputPath: string): Array<DirectoryInfo> {
+    let map: DirectoryInfo[] = [];
+    const traverseDirectory = (currentPath: string) => {
+      const items = fs.readdirSync(currentPath, { withFileTypes: true });
+      items.forEach(item => {
+        if (this.shouldIgnore(item.name)) return;
+        const itemPath = path.join(currentPath, item.name);
+        console.log('Item Path: ',itemPath);
+        map.push({
+          name: item.name,
+          isFolder: item.isDirectory(),
+          realPath: itemPath
+        });
+
+        if (item.isDirectory()) {
+          traverseDirectory(itemPath);
+        }
       });
+    };
+
+    traverseDirectory(inputPath);
+    console.log('Map: ',map);
+    return map;
+  }
+
+  shouldIgnore(name: string): boolean {
+    const ignoreList = ['.DS_Store', 'docs', 'folders', 'files', 'node_modules'];
+    return ignoreList.includes(name);
   }
 }

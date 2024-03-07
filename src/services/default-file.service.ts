@@ -1,14 +1,22 @@
 import { FileHandler } from "../interfaces/file-handler.interface";
 import * as fs from 'fs';
-import * as path from 'path';
+import { MarkdownService } from "./markdown-file.service";
 
 export class DefaultFileService implements FileHandler {
+  private readonly markdownService: MarkdownService;
+
+  constructor() {
+      this.markdownService = new MarkdownService();
+  }
   handleFile(filePath: string, outputDir: string): void {
-      const content = fs.readFileSync(filePath, 'utf-8');
-      const outputFileName = path.basename(filePath) + ".md";
-      const outputPath = path.join(outputDir, "files", outputFileName);
+    console.log('FilePath: ' + filePath, 'OutputDir: ' + outputDir);
+      const content = fs.readFileSync(filePath, 'utf-8'); 
       const markdown = `Content:\n\`\`\`\n${content}\n\`\`\``;
-      fs.writeFileSync(outputPath, markdown);
+      const documentation = `Documentation:\nBu dosya şunun için kullanılır...`;
+      const dependencies = `Dependencies:\n- Dependency1\n- Dependency2`;
+      const finalContent = `${markdown}\n\n${documentation}\n\n${dependencies}`;
+      this.markdownService.generateMarkdown(filePath,outputDir,finalContent);
+      //fs.writeFileSync(outputDir, finalContent);
   }
 
   async writeAnalysisResultToFile(filePath: string, analysisResult: string): Promise<void> {

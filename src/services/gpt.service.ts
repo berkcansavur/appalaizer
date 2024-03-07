@@ -4,8 +4,6 @@ import OpenAI from 'openai';
 export class GptService {
   private openai: OpenAI | null = null;
 
-
-
   private async createOpenAiClient(): Promise<OpenAI> {
     const apiKey = Config.getApiKey();
     if (!apiKey) {
@@ -38,6 +36,7 @@ export class GptService {
       } else {
         throw new Error('Invalid response received from OpenAI API.');
       }
+      //return 'gpt generated response '
     } catch (error: any) {
       const errorMessage = error.response?.data?.error?.message || error.message || 'Unknown error occurred';
       throw new Error(`An error occurred during OpenAI API request: ${errorMessage}`);
