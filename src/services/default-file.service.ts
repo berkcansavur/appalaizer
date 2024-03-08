@@ -16,7 +16,6 @@ export class DefaultFileService implements FileHandler {
       const dependencies = `Dependencies:\n- Dependency1\n- Dependency2`;
       const finalContent = `${markdown}\n\n${documentation}\n\n${dependencies}`;
       this.markdownService.generateMarkdown(filePath,outputDir,finalContent);
-      //fs.writeFileSync(outputDir, finalContent);
   }
 
   async writeAnalysisResultToFile(filePath: string, analysisResult: string): Promise<void> {
