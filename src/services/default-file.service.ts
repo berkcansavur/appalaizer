@@ -1,38 +1,44 @@
-import { FileHandler } from "../interfaces/file-handler.interface";
-import * as fs from 'fs';
-import { MarkdownService } from "./markdown-file.service";
+import { FileHandler } from '../interfaces/file-handler.interface'
+import * as fs from 'fs'
+import { MarkdownService } from './markdown-file.service'
 
 export class DefaultFileService implements FileHandler {
-  private readonly markdownService: MarkdownService;
+  private readonly markdownService: MarkdownService
 
   constructor() {
-      this.markdownService = new MarkdownService();
+    this.markdownService = new MarkdownService()
   }
   handleFile(filePath: string, outputDir: string): void {
-    console.log('FilePath: ' + filePath, 'OutputDir: ' + outputDir);
-      const content = fs.readFileSync(filePath, 'utf-8'); 
-      const markdown = `Content:\n\`\`\`\n${content}\n\`\`\``;
-      const documentation = `Documentation:\nBu dosya şunun için kullanılır...`;
-      const dependencies = `Dependencies:\n- Dependency1\n- Dependency2`;
-      const finalContent = `${markdown}\n\n${documentation}\n\n${dependencies}`;
-      this.markdownService.generateMarkdown(filePath,outputDir,finalContent);
+    console.log('FilePath: ' + filePath, 'OutputDir: ' + outputDir)
+    const content = fs.readFileSync(filePath, 'utf-8')
+    const markdown = `Content:\n\`\`\`\n${content}\n\`\`\``
+    this.markdownService.generateMarkdown(filePath, outputDir, markdown)
   }
 
-  async writeAnalysisResultToFile(filePath: string, analysisResult: string): Promise<void> {
+  async writeAnalysisResultToFile(
+    filePath: string,
+    analysisResult: string,
+  ): Promise<void> {
     try {
-      const fileContent = fs.readFileSync(filePath, 'utf-8');
-      const updatedContent = this.updateFileContent(fileContent, analysisResult);
-      fs.writeFileSync(filePath, updatedContent, 'utf-8');
-      console.log(`Analysis successfully saved to the file: ${filePath}`);
+      const fileContent = fs.readFileSync(filePath, 'utf-8')
+      const updatedContent = this.updateFileContent(fileContent, analysisResult)
+      fs.writeFileSync(filePath, updatedContent, 'utf-8')
+      console.log(`Analysis successfully saved to the file: ${filePath}`)
     } catch (error) {
-      console.error('An error occurred while writing analysis result to file:', error);
-      throw error;
+      console.error(
+        'An error occurred while writing analysis result to file:',
+        error,
+      )
+      throw error
     }
   }
 
-  private updateFileContent(fileContent: string, analysisResult: string): string {
-    const documentationHeader = 'Documentation:';
-    const updatedContent = `${documentationHeader}\n${analysisResult}\n\n${fileContent}`;
-    return updatedContent;
+  private updateFileContent(
+    fileContent: string,
+    analysisResult: string,
+  ): string {
+    const documentationHeader = 'Documentation:'
+    const updatedContent = `${documentationHeader}\n${analysisResult}\n\n${fileContent}`
+    return updatedContent
   }
 }

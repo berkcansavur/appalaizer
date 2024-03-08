@@ -1,6 +1,6 @@
 import { Config } from '../config'
 import OpenAI from 'openai'
-import { ChatCompletionMessageParam, Models } from 'openai/resources'
+import { ChatCompletionMessageParam } from 'openai/resources'
 
 export class GptService {
   private openai: OpenAI | null = null
@@ -55,8 +55,8 @@ export class GptService {
         if (!completion) {
           throw new Error(`Completion could not be created`)
         }
-        console.log('Completion: ', completion);
-        return completion;
+        console.log('Translated Promt: ', completion)
+        return completion
       } else {
         throw new Error('Invalid response received from OpenAI API.')
       }

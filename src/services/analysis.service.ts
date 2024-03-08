@@ -70,7 +70,8 @@ export class AnalysisService {
 
   private async analyzeFile(filePath: string): Promise<string> {
     const fileContent = await fs.promises.readFile(filePath, 'utf-8')
-    const prompts = await this.promptService.generateFileAnalyzePrompt(fileContent)
+    const prompts =
+      await this.promptService.generateFileAnalyzePrompt(fileContent)
     const formattedPromts = this.promptService.preparePromptForGpt(prompts)
     return await this.sendAnalyzeRequest(formattedPromts)
   }

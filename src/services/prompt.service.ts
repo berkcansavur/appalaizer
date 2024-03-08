@@ -1,13 +1,13 @@
 import { ChatCompletionMessageParam } from 'openai/resources'
 import { PROMPTS } from '../constants'
-import { TranslationService } from './translation.service';
-import { Config } from '../config';
-import { GptService } from './gpt.service';
+import { TranslationService } from './translation.service'
+import { Config } from '../config'
+import { GptService } from './gpt.service'
 
-export class PromptService extends TranslationService{
-  private language = Config.getLanguage();
+export class PromptService extends TranslationService {
+  private language = Config.getLanguage()
   constructor(gptService: GptService) {
-    super(gptService); // GptService örneğini TranslationService'e geçirin
+    super(gptService)
   }
   async generateFileAnalyzePrompt(fileContent: string): Promise<string[]> {
     const enterencePromt = this.prepareContentPrompt(fileContent)
@@ -18,9 +18,9 @@ export class PromptService extends TranslationService{
       PROMPTS.GeneralAnalyzeFromGPTConversation,
     ]
     if (this.language !== 'English') {
-      return await this.translatePromts(promtsArray, this.language);
+      return await this.translatePrompts(promtsArray, this.language)
     }
-    return promtsArray;
+    return promtsArray
   }
   preparePromptForGpt(promts: string[]): ChatCompletionMessageParam[] {
     return promts.map((prompt) => {
