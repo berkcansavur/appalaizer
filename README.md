@@ -64,8 +64,15 @@ For your problems or suggestions, you can contact us via [GitHub issues](https:/
 
 ## Installation
 
-add Appalaizer to your project by using NPM
+Add Appalaizer to your project by using NPM
 
 ```sh
-npm install appalaizer  || npm install -g appalaizer
+npm install appalaizer 
+```
+
+Or Add Appalaizer globally by using NPM
+
+```sh
+npm install -g appalaizer 
+```
 
