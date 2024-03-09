@@ -52,11 +52,11 @@ export class AnalysisService {
         )
         for (const file of filesToAnalyze) {
           const filePath = path.join(folderPath, file)
-          console.log(`File path: ${filePath}`)
+          console.log(`Analyzing the path: ${filePath}`)
+          console.log('...')
           if (filePath.endsWith('.md')) {
             const analysisResult = await this.analyzeFile(filePath)
-            console.log(`File analysis is successful: ${filePath}`)
-            console.log('Analysis Result:', analysisResult)
+            console.log(`File analysis of ${filePath} direcory is successful`)
             console.log(`Analysis writing to the file ${filePath}.`)
             await this.defaultFileService.writeAnalysisResultToFile(
               filePath,
@@ -67,8 +67,7 @@ export class AnalysisService {
       }
       console.log('Analysis of project files is done successfully.')
     } catch (error) {
-      console.error('Error occurred during file analysis:', error)
-      throw error
+      throw new Error(`Error occurred during file analysis: ${error}`)
     }
   }
 

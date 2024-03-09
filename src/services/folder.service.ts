@@ -15,7 +15,6 @@ export class FolderHandler implements FileHandler {
   }
   createFolderContent(filePath: string): string {
     let content = `Files:\n`
-    console.log('createFolderContent filePath: ', filePath)
     const files = fs.readdirSync(filePath, { withFileTypes: true })
     files.forEach((file) => {
       const fileName = file.name

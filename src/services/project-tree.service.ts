@@ -12,12 +12,10 @@ export class ProjectTreeService {
 
     map.forEach(({ name, isFolder, realPath }) => {
       if (this.shouldIgnore(name)) return
-      console.log('Real path: ', realPath)
       const outputItemPath = path.join(
         outputDir,
         isFolder ? 'folders' : 'files',
       )
-      console.log('Output Item Path: ', outputItemPath)
       const fileHandler = FileHandlerFactory.getFileHandler(
         isFolder ? 'folder' : 'file',
       )
@@ -43,7 +41,6 @@ export class ProjectTreeService {
       items.forEach((item) => {
         if (this.shouldIgnore(item.name)) return
         const itemPath = path.join(currentPath, item.name)
-        console.log('Item Path: ', itemPath)
         map.push({
           name: item.name,
           isFolder: item.isDirectory(),

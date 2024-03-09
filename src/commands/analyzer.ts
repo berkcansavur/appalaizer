@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { ConfigSetup } from './src/config'
-import { AnalysisService } from './src/services/analysis.service'
-import { GptService } from './src/services/gpt.service'
-import { ProjectTreeService } from './src/services/project-tree.service'
-import { DefaultFileService } from './src/services/default-file.service'
-import { PromptService } from './src/services/prompt.service'
+import { ConfigSetup } from '../config'
+import { AnalysisService } from '../services/analysis.service'
+import { GptService } from '../services/gpt.service'
+import { ProjectTreeService } from '../services/project-tree.service'
+import { DefaultFileService } from '../services/default-file.service'
+import { PromptService } from '../services/prompt.service'
 
 async function analyzeProjectFiles() {
   const configSetup = new ConfigSetup(new GptService())
@@ -32,7 +32,6 @@ async function analyzeProjectFiles() {
 async function runAnalysis() {
   try {
     await analyzeProjectFiles()
-    console.log('Analysis of project files is done successfully.')
   } catch (error) {
     console.error('Error occurred during project analysis:', error)
     process.exit(1)

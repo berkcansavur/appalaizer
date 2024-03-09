@@ -55,7 +55,6 @@ export class GptService {
         if (!completion) {
           throw new Error(`Completion could not be created`)
         }
-        console.log('Translated Promt: ', completion)
         return completion
       } else {
         throw new Error('Invalid response received from OpenAI API.')
@@ -74,7 +73,6 @@ export class GptService {
   public async generateGptResponse(
     prompts: ChatCompletionMessageParam[],
   ): Promise<string> {
-    console.log('Prompt: ', JSON.stringify(prompts))
     try {
       if (!this.openai) {
         this.openai = await this.createOpenAiClient()

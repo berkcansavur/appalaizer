@@ -9,7 +9,6 @@ export class DefaultFileService implements FileHandler {
     this.markdownService = new MarkdownService()
   }
   handleFile(filePath: string, outputDir: string): void {
-    console.log('FilePath: ' + filePath, 'OutputDir: ' + outputDir)
     const content = fs.readFileSync(filePath, 'utf-8')
     const markdown = `Content:\n\`\`\`\n${content}\n\`\`\``
     this.markdownService.generateMarkdown(filePath, outputDir, markdown)

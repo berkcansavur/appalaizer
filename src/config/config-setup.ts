@@ -25,9 +25,7 @@ export class ConfigSetup {
 
   async setAnalyzeLanguageFromTerminal(): Promise<void> {
     const languagaes = Object.values(Languages);
-    console.log(
-      `Here is the list of languages that are available for analysis: \n${languagaes}\n\n`,
-    )
+    console.log('Here is the list of languages that are available for analysis:', languagaes)
     const language: string = await new Promise((resolve) => {
       this.rl.question('Please enter language for analysis: ', (answer) => {
         resolve(answer)

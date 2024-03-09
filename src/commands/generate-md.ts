@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const path = require('path')
-import { ProjectTreeService } from './src/services'
+import { ProjectTreeService } from '../services'
 
 const inputPath = process.cwd() // Input Directory
 const outputDir = path.join(inputPath, 'docs') // Output Directory
