@@ -38,6 +38,7 @@ Appalaizer is an NPM package designed to optimize your development processes by 
 - **AI-Powered Analysis:** Analyzes your code using OpenAI's GPT models.
 - **Interactive CLI:** Offers an easy-to-use command-line interface.
 - **Flexible and Extensible:** Compatible with various project structures and languages.
+- **Global Scope (Not only nodejs project):** It can be used in any environment where nodejs and npm are installed. If installed globally, it can be used with bash commands from the terminal. In other words, it provides file and directory analysis in general scope.
 
 ## Usage
 
