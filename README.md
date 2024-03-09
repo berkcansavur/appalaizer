@@ -9,9 +9,16 @@ Appalaizer is an NPM package designed to optimize your development processes by 
 
 - Appalaizer is an open source project.
 
-## About Appalaizer
+## Features
 
-- **Logic:** The Appalyzer package creates a tree structure of the directory in which it is run, and creates markdown (.md) files with the contents of the files in each folder in this tree, with services designed according to need, and uses Openai engines according to your preferences, with pre-defined and under-developed prompts, and It always keeps the engines you want to use up to date from the source, analyzes them according to the engine you choose and the preferred languages, and writes them into the created markdown (.md) files.
+- **Project Tree Generator:** Turns your project's file and folder structure into a visual tree.
+- **Markdown Documentation:** Automatically generates Markdown documents compatible with Obsidian.
+- **AI-Powered Analysis:** Analyzes your code using OpenAI's GPT models.
+- **Interactive CLI:** Offers an easy-to-use command-line interface.
+- **Flexible and Extensible:** Compatible with various project structures and languages.
+- **Global Scope (Not only nodejs project):** It can be used in any environment where nodejs and npm are installed. If installed globally, it can be used with bash commands from the terminal. In other words, it provides file and directory analysis in general scope.
+
+## About Appalaizer
 
 - **Best Use Cases:** 
   - The Appalaizer package is designed to be suitable for popular note-taking applications. For example, if the created docs file is transferred directly to a value in Obsidian, the folder map will work directly. This allows examining your application's analysis files and visualizing the relationship between them.
@@ -31,14 +38,8 @@ Appalaizer is an NPM package designed to optimize your development processes by 
 
  ![docs folder directory](./img/docs-folder.png)
 
-## Features
 
-- **Project Tree Generator:** Turns your project's file and folder structure into a visual tree.
-- **Markdown Documentation:** Automatically generates Markdown documents compatible with Obsidian.
-- **AI-Powered Analysis:** Analyzes your code using OpenAI's GPT models.
-- **Interactive CLI:** Offers an easy-to-use command-line interface.
-- **Flexible and Extensible:** Compatible with various project structures and languages.
-- **Global Scope (Not only nodejs project):** It can be used in any environment where nodejs and npm are installed. If installed globally, it can be used with bash commands from the terminal. In other words, it provides file and directory analysis in general scope.
+- **Logic:** The Appalyzer package creates a tree structure of the directory in which it is run, and creates markdown (.md) files with the contents of the files in each folder in this tree, with services designed according to need, and uses Openai engines according to your preferences, with pre-defined and under-developed prompts, and It always keeps the engines you want to use up to date from the source, analyzes them according to the engine you choose and the preferred languages, and writes them into the created markdown (.md) files.
 
 ## Usage
 
