@@ -25,11 +25,11 @@ Appalaizer is an NPM package designed to optimize your development processes by 
 
 ***Get this,***
 
-- ![obsidian](./img/obsidian.png)
+ ![obsidian](./img/obsidian.png)
 
 ***from this:***
 
-- ![docs folder directory](./img/docs-folder.png)
+ ![docs folder directory](./img/docs-folder.png)
 
 ## Features
 
