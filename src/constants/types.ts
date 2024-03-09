@@ -3,4 +3,3 @@ export type DirectoryInfo = {
   isFolder: boolean
   realPath: string
 }
-export const ignoreList = ['.DS_Store', 'docs', 'folders', 'files', 'node_modules']

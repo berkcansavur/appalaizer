@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { FileHandlerFactory } from '../factories/file-handler.factory'
 import { DirectoryInfo } from '../constants/types'
+import { ignoreList } from '../constants'
 
 export class ProjectTreeService {
   generateProjectTree(inputPath: string, outputDir: string): void {
@@ -61,7 +62,6 @@ export class ProjectTreeService {
   }
 
   shouldIgnore(name: string): boolean {
-    const ignoreList = ['.DS_Store', 'docs', 'folders', 'files', 'node_modules']
     return ignoreList.includes(name)
   }
 }

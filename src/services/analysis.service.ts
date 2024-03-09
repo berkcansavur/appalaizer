@@ -5,6 +5,7 @@ import { ProjectTreeService } from 'services/project-tree.service'
 import { DefaultFileService } from 'services/default-file.service'
 import { PromptService } from './prompt.service'
 import { ChatCompletionMessageParam } from 'openai/resources'
+import { ignoreList } from '../constants'
 
 export class AnalysisService {
   constructor(
@@ -43,10 +44,13 @@ export class AnalysisService {
 
         console.log(`Analyzing files in ${folder} folder...`)
         const files = fs.readdirSync(folderPath)
+        const filesToAnalyze = files.filter(
+          (file) => !ignoreList.includes(file),
+        )
         console.log(
           `Files to be analyzed count in ${folder} folder: ${files.length}`,
         )
-        for (const file of files) {
+        for (const file of filesToAnalyze) {
           const filePath = path.join(folderPath, file)
           console.log(`File path: ${filePath}`)
           if (filePath.endsWith('.md')) {
