@@ -18,7 +18,7 @@ Appalaizer is an NPM package designed to optimize your development processes by 
 
   - It creates a folder named docs in the directory where it runs and saves the md files created without the analysis preference or this option. This allows you to analyze the files that will be added to the relevant directory in other languages ​​as long as you are in the node.js environment, **but it is your responsibility to benefit from this service in accordance with your own language and structure**.
 
-  (For example, if you add a Python directory to your project to analyze a file in an environment where you are working with TypeScript and try to compile the TypeScript in the directory where the file is located, you will receive an error due to language incompatibility. In this case, if you want to analyze without compiling, you will not have a problem, etc.)
+  ***(For example, if you add a Python directory to your project to analyze a file in an environment where you are working with TypeScript and try to compile the TypeScript in the directory where the file is located, you will receive an error due to language incompatibility. In this case, if you want to analyze without compiling, you will not have a problem, etc.)***
   
   - It is suitable to be used in cases where complex structures can be explained in their simplest form by creating timely AI-based analyzes in files containing complex structures, and promts will be developed in this direction in future versions.
 
