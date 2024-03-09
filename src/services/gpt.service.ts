@@ -1,12 +1,28 @@
-import { Config } from '../config'
+import { Config, ConfigSetup } from '../config'
 import OpenAI from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources'
+import * as readline from 'readline'
 
 export class GptService {
   private openai: OpenAI | null = null
-
   private async createOpenAiClient(): Promise<OpenAI> {
     const apiKey = Config.getApiKey()
+    if(apiKey == null) {
+      console.log('Your API key is invalid. Please set your OpenAI API key.')
+      const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      })
+
+      const apiKey: string = await new Promise((resolve) => {
+        readline.question('Please enter your API key: ', (answer: string) => {
+          resolve(answer)
+        })
+      })
+
+      Config.setApiKey(apiKey)
+      console.log('API key has been set successfully.')
+    }
     if (!apiKey) {
       throw new Error('GPT API Key is not provided.')
     } else {

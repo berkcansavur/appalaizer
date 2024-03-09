@@ -6,9 +6,7 @@ import { Languages } from '../constants'
 export class ConfigSetup {
   private rl: readline.Interface
 
-  constructor(
-    private readonly gptService: GptService,
-  ) {
+  constructor(private readonly gptService: GptService) {
     this.rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -24,8 +22,11 @@ export class ConfigSetup {
   }
 
   async setAnalyzeLanguageFromTerminal(): Promise<void> {
-    const languagaes = Object.values(Languages);
-    console.log('Here is the list of languages that are available for analysis:', languagaes)
+    const languagaes = Object.values(Languages)
+    console.log(
+      'Here is the list of languages that are available for analysis:',
+      languagaes,
+    )
     const language: string = await new Promise((resolve) => {
       this.rl.question('Please enter language for analysis: ', (answer) => {
         resolve(answer)

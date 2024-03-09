@@ -5,7 +5,7 @@ import { GptService } from './gpt.service'
 import { AnalysisService } from './analysis.service'
 import { DefaultFileService } from './default-file.service'
 import { PromptService } from './prompt.service'
-import { ConfigSetup } from '../config'
+import { Config, ConfigSetup } from '../config'
 
 export class CommandLineService {
   constructor() {}
@@ -36,7 +36,10 @@ export class CommandLineService {
   }
   async analyzeProjectFiles() {
     const configSetup = new ConfigSetup(new GptService())
-    await configSetup.setApiKeyFromTerminal()
+    if (Config.getApiKey() === null) {
+      await configSetup.setApiKeyFromTerminal()
+    }
+
     await configSetup.setAIEngineFromTerminal()
     await configSetup.setAnalyzeLanguageFromTerminal()
     const gptService = new GptService()
