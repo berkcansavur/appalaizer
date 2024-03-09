@@ -1,4 +1,5 @@
 import { GptService } from './gpt.service'
+import { Languages } from '../constants'
 
 export class TranslationService {
   private translationCache = new Map<string, string>()

@@ -22,7 +22,6 @@ async function analyzeProjectFiles() {
 
   try {
     await analysisService.analyzeProjectFiles(projectPath)
-    console.log('Analysis is completed.')
   } catch (error) {
     console.error(`An error occurred: ${error}`)
   } finally {
