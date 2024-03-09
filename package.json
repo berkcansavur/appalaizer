@@ -14,7 +14,7 @@
     "lint": "eslint ."
   },
   "bin": {
-    "appalaizer": "./dist/wrapper.js"
+    "apl": "./dist/wrapper.js"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
