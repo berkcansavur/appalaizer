@@ -14,7 +14,7 @@
     "lint": "eslint ."
   },
   "bin": {
-    "appalaizer": "./dist/cli.js",
+    "appalaizer-md": "./dist/cli.js",
     "appalaizer-analyze": "./dist/analyzer.js"
   },
   "devDependencies": {
