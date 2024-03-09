@@ -23,10 +23,12 @@ Appalaizer is an NPM package designed to optimize your development processes by 
   - It is suitable to be used in cases where complex structures can be explained in their simplest form by creating timely AI-based analyzes in files containing complex structures, and promts will be developed in this direction in future versions.
 
 Get this,
-![obsidian](./img/obsidian.png)
+
+- ![obsidian](./img/obsidian.png)
 
 from this:
-![docs folder directory](./img/docs-folder.png)
+
+- ![docs folder directory](./img/docs-folder.png)
 
 ## Features
 
