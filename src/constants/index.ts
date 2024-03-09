@@ -19,9 +19,9 @@ export const ignoreList = [
 ]
 
 export const COMMAND_DESCRIPTIONS: { [command: string]: string } = {
-  "appalaizer-list": "list of available appalaizer commands",
-  "appalaizer-md": "creates markdown files for obsidian application",
-  "appalaizer-analyze": "creates md files and generates documentation for the specified files with openai",
+  "--list": "list of available appalaizer commands",
+  "--md": "creates markdown files for obsidian application",
+  "--analyze": "creates md files and generates documentation for the specified files with openai",
 };
 
 

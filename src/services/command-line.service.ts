@@ -12,13 +12,13 @@ export class CommandLineService {
 
   async executeCommand(command: string) {
     switch (command) {
-      case 'appalaizer-list':
+      case '--list':
         this.listBinCommands()
         break
-      case 'appalaizer-analyze':
+      case '--analyze':
         await this.runAnalysis()
         break
-      case 'appalaizer-md':
+      case '--md':
         this.runGeneratedProjectTree()
         break
       default:
@@ -47,7 +47,7 @@ export class CommandLineService {
       new DefaultFileService(),
       new PromptService(gptService),
     )
-  
+
     try {
       await analysisService.analyzeProjectFiles(projectPath)
     } catch (error) {
@@ -56,7 +56,7 @@ export class CommandLineService {
       configSetup.closeReadline()
     }
   }
-  
+
   async runAnalysis() {
     try {
       await this.analyzeProjectFiles()
@@ -70,13 +70,11 @@ export class CommandLineService {
     console.log(
       'Available commands of the appalaizer package are listed below:',
     )
-    // En uzun komutun uzunluğunu bul
     const longestCommandLength = Math.max(
       ...Object.keys(COMMAND_DESCRIPTIONS).map((command) => command.length),
     )
 
     Object.entries(COMMAND_DESCRIPTIONS).forEach(([command, description]) => {
-      // Her komut için eşit mesafe sağlamak üzere gerekli boşluk sayısını hesapla
       const padding = ' '.repeat(longestCommandLength - command.length)
       console.log(`${command}:${padding}  ${description}`)
     })
