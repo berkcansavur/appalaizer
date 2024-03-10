@@ -60,7 +60,7 @@ export class ConfigSetup {
     console.log('AI Engine has been set successfully.')
   }
 
-  closeReadline() {
+  public closeReadline() {
     this.rl.close()
   }
 }

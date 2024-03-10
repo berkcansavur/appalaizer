@@ -21,10 +21,19 @@ export class CommandLineService {
       case '--md':
         this.runGeneratedProjectTree()
         break
+      case '--api-key':
+        await this.setApiKey()
+        break
       default:
         console.log(`"${command}" is not a recognized command.`)
         this.listBinCommands()
     }
+  }
+  async setApiKey() {
+    const gptService = new GptService();
+    const configSetup =  new ConfigSetup(gptService)
+    await configSetup.setApiKeyFromTerminal();
+    configSetup.closeReadline();
   }
   runGeneratedProjectTree() {
     const inputPath = process.cwd()
@@ -64,7 +73,7 @@ export class CommandLineService {
     try {
       await this.analyzeProjectFiles()
     } catch (error) {
-      console.error('Error occurred during project analysis:', error)
+      console.error(error)
       process.exit(1)
     }
   }
