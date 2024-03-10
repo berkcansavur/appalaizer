@@ -6,6 +6,7 @@ import { AnalysisService } from './analysis.service'
 import { DefaultFileService } from './default-file.service'
 import { PromptService } from './prompt.service'
 import { Config, ConfigSetup } from '../config'
+import { ErrorLogic, ProcessCouldNotSucced } from '../common'
 
 export class CommandLineService {
   constructor() {}
@@ -63,7 +64,10 @@ export class CommandLineService {
     try {
       await analysisService.analyzeProjectFiles(projectPath)
     } catch (error) {
-      console.error(`An error occurred: ${error}`)
+      throw new ProcessCouldNotSucced(
+        'Analyzing project files',
+        ErrorLogic.errorProps(error),
+      ) 
     } finally {
       configSetup.closeReadline()
     }

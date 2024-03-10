@@ -6,6 +6,12 @@ import { DefaultFileService } from 'services/default-file.service'
 import { PromptService } from './prompt.service'
 import { ChatCompletionMessageParam } from 'openai/resources'
 import { ignoreList } from '../constants'
+import {
+  ErrorLogic,
+  FolderNotFoundException,
+  ProcessCouldNotSucced,
+  RequestFailedException,
+} from '../common'
 
 export class AnalysisService {
   constructor(
@@ -22,7 +28,10 @@ export class AnalysisService {
       console.log('Project tree is generated and markdown files are created.')
       await this.analyzeFilesInOutputDirectory(outputDir)
     } catch (error) {
-      console.error('An error occurred while analyzing project files.', error)
+      throw new ProcessCouldNotSucced(
+        'Creating project tree',
+        ErrorLogic.errorProps(error),
+      )
     }
   }
 
@@ -31,14 +40,15 @@ export class AnalysisService {
   ): Promise<void> {
     try {
       if (!fs.existsSync(outputDir)) {
-        console.error('Docs folder can not be found.')
-        return
+        throw new FolderNotFoundException(outputDir)
       }
 
       for (const folder of ['files', 'folders']) {
         const folderPath = path.join(outputDir, folder)
         if (!fs.existsSync(folderPath)) {
-          console.error(`${folder} folder does not exist.`)
+          console.log(
+            `${folder} folder does not exist in ${outputDir}, skipping.`,
+          )
           continue
         }
 
@@ -67,7 +77,10 @@ export class AnalysisService {
       }
       console.log('Analysis of project files is done successfully.')
     } catch (error) {
-      throw new Error(`Error occurred during file analysis: ${error}`)
+      throw new ProcessCouldNotSucced(
+        'Analyzing project files',
+        ErrorLogic.errorProps(error),
+      )
     }
   }
 
@@ -78,9 +91,14 @@ export class AnalysisService {
     const formattedPromts = this.promptService.preparePromptForGpt(prompts)
     return await this.sendAnalyzeRequest(formattedPromts)
   }
+
   private async sendAnalyzeRequest(
     prompts: ChatCompletionMessageParam[],
   ): Promise<string> {
-    return await this.gptService.generateGptResponse(prompts)
+    try {
+      return this.gptService.generateGptResponse(prompts)
+    } catch (error) {
+      throw new RequestFailedException(ErrorLogic.errorProps(error))
+    }
   }
 }

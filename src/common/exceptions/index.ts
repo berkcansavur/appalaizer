@@ -10,6 +10,24 @@ export class FileNotFoundException extends BaseError {
     this.name = 'File not found exception';
   }
 }
+export class FolderNotFoundException extends BaseError {
+  constructor(filePath: string) {
+    super(`Folder not found at path: ${filePath}`);
+    this.name = 'Folder not found exception';
+  }
+}
+export class ProcessCouldNotSucced extends BaseError {
+  constructor(operationName:string, message: string) {
+    super(`Process ${operationName} could not succeed: ${message}`);
+    this.name = 'Process could not succeed';
+  }
+}
+export class RequestFailedException extends BaseError {
+  constructor(message: string) {
+    super(message);
+    this.name = 'Request failed exception';
+  }
+}
 export class InvalidApiKeyError extends BaseError {
   constructor() {
     super('Invalid API key provided.');
