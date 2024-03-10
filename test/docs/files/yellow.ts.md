@@ -1,4 +1,0 @@
-Content:
-```
-export class Yellow {}
-```

@@ -1,6 +1,6 @@
 {
   "name": "appalaizer",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Package for analysing structure and relations of existing application",
   "main": "dist/index.js",
   "files": [
@@ -37,7 +37,8 @@
     "openai",
     "gpt",
     "ai-based",
-    "tree-generate"
+    "tree-generate",
+    "cli"
   ],
   "author": "Berkcan Şavur",
   "license": "ISC",
