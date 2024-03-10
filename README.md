@@ -1,6 +1,6 @@
 # Appalaizer
 
-![Appalaizer Logo](https://drive.google.com/file/d/1bSodei6GUb-x2uiGGSkmZ2VMToqxTKQQ/view?usp=drive_link)
+![Appalaizer Logo](https://github.com/berkcansavur/appalaizer/blob/main/img/appalaizer-logo.webp)
 
 
 Appalaizer is an NPM package designed to optimize your development processes by analyzing the structure and relationships within your projects. It allows you to deeply examine your file and folder structures, generate Markdown documentation suitable for Obsidian, and obtain understandable explanations over your code content with AI-powered analysis.
@@ -32,11 +32,11 @@ Appalaizer is an NPM package designed to optimize your development processes by 
 
 ***Get this,***
 
- ![obsidian](./img/obsidian.png)
+ ![obsidian](https://github.com/berkcansavur/appalaizer/blob/main/img/obsidian.png)
 
 ***from this:***
 
- ![docs folder directory](./img/docs-folder.png)
+ ![docs folder directory](https://github.com/berkcansavur/appalaizer/blob/main/img/docs-folder.png)
 
 
 - **Logic:** The Appalyzer package creates a tree structure of the directory in which it is run, and creates markdown (.md) files with the contents of the files in each folder in this tree, with services designed according to need, and uses Openai engines according to your preferences, with pre-defined and under-developed prompts, and It always keeps the engines you want to use up to date from the source, analyzes them according to the engine you choose and the preferred languages, and writes them into the created markdown (.md) files.
