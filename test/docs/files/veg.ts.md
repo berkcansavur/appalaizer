@@ -1,0 +1,4 @@
+Content:
+```
+export class Vegetable {}
+```

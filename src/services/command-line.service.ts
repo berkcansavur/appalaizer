@@ -5,7 +5,7 @@ import { GptService } from './gpt.service'
 import { AnalysisService } from './analysis.service'
 import { DefaultFileService } from './default-file.service'
 import { PromptService } from './prompt.service'
-import { ConfigSetup } from '../config'
+import { Config, ConfigSetup } from '../config'
 
 export class CommandLineService {
   constructor() {}
@@ -21,10 +21,19 @@ export class CommandLineService {
       case '--md':
         this.runGeneratedProjectTree()
         break
+      case '--api-key':
+        await this.setApiKey()
+        break
       default:
         console.log(`"${command}" is not a recognized command.`)
         this.listBinCommands()
     }
+  }
+  async setApiKey() {
+    const gptService = new GptService();
+    const configSetup =  new ConfigSetup(gptService)
+    await configSetup.setApiKeyFromTerminal();
+    configSetup.closeReadline();
   }
   runGeneratedProjectTree() {
     const inputPath = process.cwd()
@@ -36,7 +45,10 @@ export class CommandLineService {
   }
   async analyzeProjectFiles() {
     const configSetup = new ConfigSetup(new GptService())
-    await configSetup.setApiKeyFromTerminal()
+    if (Config.getApiKey() === null) {
+      await configSetup.setApiKeyFromTerminal()
+    }
+
     await configSetup.setAIEngineFromTerminal()
     await configSetup.setAnalyzeLanguageFromTerminal()
     const gptService = new GptService()
@@ -61,7 +73,7 @@ export class CommandLineService {
     try {
       await this.analyzeProjectFiles()
     } catch (error) {
-      console.error('Error occurred during project analysis:', error)
+      console.error(error)
       process.exit(1)
     }
   }

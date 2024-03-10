@@ -1,14 +1,30 @@
+import { ApiKeyException, ErrorLogic, OpenAIException } from '../common'
 import { Config } from '../config'
 import OpenAI from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources'
 
 export class GptService {
   private openai: OpenAI | null = null
-
   private async createOpenAiClient(): Promise<OpenAI> {
     const apiKey = Config.getApiKey()
+    if(apiKey == null) {
+      console.log('Your API key is invalid. Please set your OpenAI API key.')
+      const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      })
+
+      const apiKey: string = await new Promise((resolve) => {
+        readline.question('Please enter your API key: ', (answer: string) => {
+          resolve(answer)
+        })
+      })
+
+      Config.setApiKey(apiKey)
+      console.log('API key has been set successfully.')
+    }
     if (!apiKey) {
-      throw new Error('GPT API Key is not provided.')
+      throw new ApiKeyException();
     } else {
       return new OpenAI({ apiKey })
     }
@@ -27,13 +43,7 @@ export class GptService {
       console.log('Available engines:', engines)
       return engines
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.error?.message ||
-        error.message ||
-        'Unknown error occurred'
-      throw new Error(
-        `An error occurred while listing engines: ${errorMessage}`,
-      )
+      throw new OpenAIException(ErrorLogic.errorProps(error))
     }
   }
   public async gptTranslate(translationPrompt: string): Promise<string> {
@@ -60,13 +70,7 @@ export class GptService {
         throw new Error('Invalid response received from OpenAI API.')
       }
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.error?.message ||
-        error.message ||
-        'Unknown error occurred'
-      throw new Error(
-        `An error occurred during OpenAI API request: ${errorMessage}`,
-      )
+      throw new OpenAIException(ErrorLogic.errorProps(error))
     }
   }
 
@@ -92,13 +96,7 @@ export class GptService {
         throw new Error('Invalid response received from OpenAI API.')
       }
     } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.error?.message ||
-        error.message ||
-        'Unknown error occurred'
-      throw new Error(
-        `An error occurred during OpenAI API request: ${errorMessage}`,
-      )
+      throw new OpenAIException(ErrorLogic.errorProps(error))
     }
   }
 }

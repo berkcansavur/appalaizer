@@ -46,17 +46,45 @@ Appalaizer is an NPM package designed to optimize your development processes by 
 After installing Appalaizer, you can run it from the command line in the root directory of your project:
 
 
-**appalaizer --analyze or apl --analyze**
+```sh
+appalaizer --analyze
+```
+or 
+```sh 
+apl --analyze
+```
 
 Creates markdowns of all source directorys structure and generates ai-based documentation
 
-**appalaizer --list or apl --list**
+```sh
+appalaizer --list
+```
+or 
+```sh
+apl --list
+```
 
 Lists all available commands in appalaizer package
 
-**appalaizer --md or apl --md**
+
+```sh
+appalaizer --md 
+```
+or
+```sh
+apl --md 
+```
 
 Creates only md files as structure (faster but there will be no analysis.)
+```sh
+appalaizer --api-key 
+```
+or
+```sh
+apl --api-key 
+```
+
+Sets openai api key of package
 
 ## Support & Contact and Contribution
 
