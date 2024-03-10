@@ -1,6 +1,6 @@
 # Appalaizer
 
-![Appalaizer Logo](./img/appalaizer-logo.webp)
+![Appalaizer Logo](https://drive.google.com/file/d/1bSodei6GUb-x2uiGGSkmZ2VMToqxTKQQ/view?usp=drive_link)
 
 
 Appalaizer is an NPM package designed to optimize your development processes by analyzing the structure and relationships within your projects. It allows you to deeply examine your file and folder structures, generate Markdown documentation suitable for Obsidian, and obtain understandable explanations over your code content with AI-powered analysis.
