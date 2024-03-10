@@ -1,6 +1,7 @@
 import { FileHandler } from '../interfaces/file-handler.interface'
 import * as fs from 'fs'
 import { MarkdownService } from './markdown-file.service'
+import { ErrorLogic, ProcessCouldNotSucced } from '../common'
 
 export class DefaultFileService implements FileHandler {
   private readonly markdownService: MarkdownService
@@ -24,11 +25,7 @@ export class DefaultFileService implements FileHandler {
       fs.writeFileSync(filePath, updatedContent, 'utf-8')
       console.log(`Analysis successfully saved to the file: ${filePath}`)
     } catch (error) {
-      console.error(
-        'An error occurred while writing analysis result to file:',
-        error,
-      )
-      throw error
+      throw new ProcessCouldNotSucced('Writing analysis to file', ErrorLogic.errorProps(error));
     }
   }
 
