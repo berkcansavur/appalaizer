@@ -54,7 +54,6 @@ export class ProjectTreeService {
     }
 
     traverseDirectory(inputPath)
-    console.log('Map: ', map)
     return map
   }
 

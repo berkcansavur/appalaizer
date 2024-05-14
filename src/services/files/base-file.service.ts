@@ -107,10 +107,7 @@ export class BaseFileService implements FileHandler {
     const content = fs.readFileSync(filePath, 'utf-8')
     const fileExtension = this.getFileExtension(filePath)
     const fileProperties = this.getFileProperties(content, fileExtension)
-    console.log('File Properties: ', JSON.stringify(fileProperties))
     const markdown = this.formatFileProperties(fileProperties)
-
-    console.log('Markdown: ', markdown)
     this.markdownService.generateMarkdown(filePath, outputDir, markdown)
   }
 }
