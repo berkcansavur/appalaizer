@@ -38,26 +38,21 @@ export class BaseFileService implements FileHandler {
     return updatedContent
   }
 
-  private getFileExtension(filePath: string): string {
-    const fileExtension = filePath.split('.').pop()?.toLowerCase() || ''
-    return `.${fileExtension}`
-  }
-
-  private getFileProperties(content: string, filePath: string): FileProperties {
-    console.log(`content:  ${JSON.stringify(content)}`)
-    console.log(`filePath:  ${JSON.stringify(filePath)}`)
-    const fileExtension = this.getFileExtension(filePath)
+  getFileProperties(content: string, fileExtension: string): FileProperties {
     const fileService = FileServiceFactory.getFileHandler(
       fileExtension,
       content,
     )
-    console.log(`fileService:  ${JSON.stringify(fileService)}`)
     return fileService.getFileProperties()
+  }
+
+  getFileExtension(filePath: string): string {
+    const fileExtension = filePath.split('.').pop()?.toLowerCase() || ''
+    return `.${fileExtension}`
   }
 
   formatFileProperties(fileProperties: FileProperties): string {
     let formattedContent = ''
-
     if (fileProperties.content) {
       formattedContent += `### Content\n\`\`\`\n${fileProperties.content}\n\`\`\`\n\n`
     }
@@ -89,7 +84,8 @@ export class BaseFileService implements FileHandler {
 
   handleFile(filePath: string, outputDir: string): void {
     const content = fs.readFileSync(filePath, 'utf-8')
-    const fileProperties = this.getFileProperties(content, filePath)
+    const fileExtension = this.getFileExtension(filePath)
+    const fileProperties = this.getFileProperties(content, fileExtension)
     console.log('File Properties: ', JSON.stringify(fileProperties))
     const markdown = this.formatFileProperties(fileProperties)
 

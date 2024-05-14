@@ -53,12 +53,13 @@ export class CommandLineService {
     await configSetup.setAIEngineFromTerminal()
     await configSetup.setAnalyzeLanguageFromTerminal()
     const gptService = new GptService()
+    const baseFileService = new BaseFileService()
     const projectPath = process.cwd()
     const analysisService = new AnalysisService(
       gptService,
       new ProjectTreeService(),
-      new BaseFileService(),
-      new PromptService(gptService),
+      baseFileService,
+      new PromptService(gptService, baseFileService),
     )
 
     try {

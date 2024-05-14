@@ -1,3 +1,5 @@
+import { FILE_EXTENSIONS } from '../constants'
+
 export type DirectoryInfo = {
   name: string
   isFolder: boolean
@@ -13,4 +15,5 @@ export type FileProperties = {
   content?: string
   dependencies?: Dependencies
   functionalities?: string[]
+  extension?: FILE_EXTENSIONS
 }
