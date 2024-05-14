@@ -2,14 +2,14 @@ import { GptService } from 'services/gpt.service'
 import * as fs from 'fs'
 import * as path from 'path'
 import { ProjectTreeService } from 'services/project-tree.service'
-import { DefaultFileService } from 'services/default-file.service'
+import { BaseFileService } from 'services/files'
 import { PromptService } from './prompt.service'
 import { ChatCompletionMessageParam } from 'openai/resources'
 import { ignoreList } from '../constants'
 import {
   ErrorLogic,
   FolderNotFoundException,
-  ProcessCouldNotSucced,
+  ProcessCouldNotSucceed,
   RequestFailedException,
 } from '../common'
 
@@ -17,7 +17,7 @@ export class AnalysisService {
   constructor(
     private readonly gptService: GptService,
     private readonly projectTreeService: ProjectTreeService,
-    private readonly defaultFileService: DefaultFileService,
+    private readonly defaultFileService: BaseFileService,
     private readonly promptService: PromptService,
   ) {}
 
@@ -28,7 +28,7 @@ export class AnalysisService {
       console.log('Project tree is generated and markdown files are created.')
       await this.analyzeFilesInOutputDirectory(outputDir)
     } catch (error) {
-      throw new ProcessCouldNotSucced(
+      throw new ProcessCouldNotSucceed(
         'Creating project tree',
         ErrorLogic.errorProps(error),
       )
@@ -77,7 +77,7 @@ export class AnalysisService {
       }
       console.log('Analysis of project files is done successfully.')
     } catch (error) {
-      throw new ProcessCouldNotSucced(
+      throw new ProcessCouldNotSucceed(
         'Analyzing project files',
         ErrorLogic.errorProps(error),
       )

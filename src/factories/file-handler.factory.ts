@@ -1,5 +1,5 @@
 import { FileHandler } from '../interfaces/file-handler.interface'
-import { DefaultFileService } from '../services/default-file.service'
+import { BaseFileService } from '../services/files/base-file.service'
 import { FolderHandler } from '../services/folder.service'
 
 export class FileHandlerFactory {
@@ -7,7 +7,7 @@ export class FileHandlerFactory {
     if (fileType === 'folder') {
       return new FolderHandler()
     } else {
-      return new DefaultFileService()
+      return new BaseFileService()
     }
   }
 }

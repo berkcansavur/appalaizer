@@ -1,5 +1,5 @@
 import { GptService } from './gpt.service'
-import { ErrorLogic, ProcessCouldNotSucced } from '../common'
+import { ErrorLogic, ProcessCouldNotSucceed } from '../common'
 
 export class TranslationService {
   private translationCache = new Map<string, string>()
@@ -34,7 +34,7 @@ export class TranslationService {
     try {
       return await this.gptService.gptTranslate(translationPrompt)
     } catch (error) {
-      throw new ProcessCouldNotSucced(
+      throw new ProcessCouldNotSucceed(
         'Translating text',
         ErrorLogic.errorProps(error),
       )
