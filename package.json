@@ -1,6 +1,6 @@
 {
   "name": "appalaizer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Package for analysing structure and relations of existing application",
   "main": "dist/index.js",
   "files": [

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { ApiKeyException, ErrorLogic, OpenAIException } from '../common'
 import { Config } from '../config'
 import OpenAI from 'openai'
@@ -7,7 +8,7 @@ export class GptService {
   private openai: OpenAI | null = null
   private async createOpenAiClient(): Promise<OpenAI> {
     const apiKey = Config.getApiKey()
-    if(apiKey == null) {
+    if (apiKey == null) {
       console.log('Your API key is invalid. Please set your OpenAI API key.')
       const readline = require('readline').createInterface({
         input: process.stdin,
@@ -24,7 +25,7 @@ export class GptService {
       console.log('API key has been set successfully.')
     }
     if (!apiKey) {
-      throw new ApiKeyException();
+      throw new ApiKeyException()
     } else {
       return new OpenAI({ apiKey })
     }
