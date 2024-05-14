@@ -53,6 +53,7 @@ export class BaseFileService implements FileHandler {
 
   formatFileProperties(fileProperties: FileProperties): string {
     let formattedContent = ''
+
     if (fileProperties.content) {
       formattedContent += `### Content\n\`\`\`\n${fileProperties.content}\n\`\`\`\n\n`
     }
@@ -61,9 +62,11 @@ export class BaseFileService implements FileHandler {
       formattedContent += '### Dependencies\n'
       const { constructorDependencies, importedDependencies } =
         fileProperties.dependencies
+
       if (constructorDependencies.length > 0) {
         formattedContent += `#### Constructor Dependencies\n${constructorDependencies.join('\n')}\n\n`
       }
+
       if (importedDependencies.length > 0) {
         formattedContent += `#### Imported Dependencies\n${importedDependencies.join('\n')}\n\n`
       }
@@ -77,6 +80,24 @@ export class BaseFileService implements FileHandler {
       formattedContent +=
         fileProperties.functionalities.map((func) => `- ${func}`).join('\n') +
         '\n\n'
+    }
+
+    if (fileProperties.structs) {
+      const { interfaces, classes, abstractClasses, types } =
+        fileProperties.structs
+      formattedContent += '### Structures\n'
+      if (interfaces && interfaces.length > 0) {
+        formattedContent += `#### Interfaces\n${interfaces.join('\n')}\n\n`
+      }
+      if (classes && classes.length > 0) {
+        formattedContent += `#### Classes\n${classes.join('\n')}\n\n`
+      }
+      if (abstractClasses && abstractClasses.length > 0) {
+        formattedContent += `#### Abstract Classes\n${abstractClasses.join('\n')}\n\n`
+      }
+      if (types && types.length > 0) {
+        formattedContent += `#### Types\n${types.join('\n')}\n\n`
+      }
     }
 
     return formattedContent

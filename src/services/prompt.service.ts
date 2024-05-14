@@ -32,7 +32,8 @@ export class PromptService extends TranslationService {
   private generateProgrammingFileEntrancePrompt(
     fileProperties: FileProperties,
   ): string[] {
-    const { dependencies, functionalities, content, extension } = fileProperties
+    const { dependencies, functionalities, content, extension, structs } =
+      fileProperties
     const { constructorDependencies, importedDependencies } = dependencies || {}
 
     let constructorDependenciesText = ''
@@ -71,11 +72,30 @@ export class PromptService extends TranslationService {
     const importDependenciesPrompt = this.generateImportsPrompt(
       importDependenciesText,
     )
+
+    let structPrompt = ''
+    if (structs) {
+      const { interfaces, classes, abstractClasses, types } = structs
+      structPrompt = `And this file contains the following structures:\n`
+      if (interfaces && interfaces.length > 0) {
+        structPrompt += `- Interfaces: ${interfaces.join(', ')}\n`
+      }
+      if (classes && classes.length > 0) {
+        structPrompt += `- Classes: ${classes.join(', ')}\n`
+      }
+      if (abstractClasses && abstractClasses.length > 0) {
+        structPrompt += `- Abstract Classes: ${abstractClasses.join(', ')}\n`
+      }
+      if (types && types.length > 0) {
+        structPrompt += `- Types: ${types.join(', ')}\n`
+      }
+    }
     const analysisPrompt = `Please analyze these dependencies along with the functionalities: ${functionalities} `
     const improvementsPrompt = `and share with me any possible improvements considering the overall structure of the code block.`
 
     return [
       fileContentPrompt,
+      structPrompt,
       fileExtensionPrompt,
       constructorDependenciesPrompt,
       importDependenciesPrompt,

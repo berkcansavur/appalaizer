@@ -22,3 +22,12 @@ export class Red {
     this.filePath = filePath
   }
 }
+export interface IRed {
+  setMethod(method: string): void
+}
+
+export type RedType = {
+  color: string
+}
+
+export abstract class ExampleAbstractClass {}

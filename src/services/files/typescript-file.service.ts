@@ -1,5 +1,10 @@
 import { IFileService, IProgrammingFile } from 'interfaces'
-import { Dependencies, DEPENDENCY_TYPES, FileProperties } from '../../constants'
+import {
+  Dependencies,
+  DEPENDENCY_TYPES,
+  FileProperties,
+  Structs,
+} from '../../constants'
 
 export class TypeScriptFile implements IFileService, IProgrammingFile {
   private fileContent: string
@@ -111,9 +116,11 @@ export class TypeScriptFile implements IFileService, IProgrammingFile {
     const dependencies = this.getDependencies()
     const functionalities = this.getFunctionalities()
     const fileProperties: FileProperties = {}
+    const structs = this.getClassNamesAndTypes()
     console.log(`dependencies:  ${JSON.stringify(dependencies)}`)
     console.log(`functionalities:  ${JSON.stringify(functionalities)}`)
     console.log(`fileContent:  ${JSON.stringify(this.fileContent)}`)
+
     if (
       dependencies.constructorDependencies.length > 0 ||
       dependencies.importedDependencies.length > 0
@@ -126,7 +133,52 @@ export class TypeScriptFile implements IFileService, IProgrammingFile {
     if (this.fileContent) {
       fileProperties.content = this.fileContent
     }
+    if (structs) {
+      fileProperties.structs = structs
+    }
 
     return fileProperties
+  }
+
+  getClassNamesAndTypes(): Structs {
+    const struct: Structs = {}
+
+    const lines = this.fileContent.split('\n')
+
+    for (const line of lines) {
+      const classDeclarationRegex =
+        /\b((abstract|interface)\s+)?(class|interface|type)\s+(\w+)(?:\s+implements\s+([\w\s,]+))?/
+
+      const match = line.match(classDeclarationRegex)
+      if (match) {
+        const isAbstractOrInterface = match[2] !== undefined
+        const className = match[4]
+        const implementedInterfaces = match[5]
+
+        let classType = match[3]
+        if (isAbstractOrInterface) {
+          classType = match[2] + ' ' + classType
+        }
+        if (implementedInterfaces) {
+          classType += ` implements ${implementedInterfaces}`
+        }
+
+        if (classType === 'class') {
+          if (!struct.classes) struct.classes = []
+          struct.classes.push(className)
+        } else if (classType === 'interface') {
+          if (!struct.interfaces) struct.interfaces = []
+          struct.interfaces.push(className)
+        } else if (classType === 'abstract class') {
+          if (!struct.abstractClasses) struct.abstractClasses = []
+          struct.abstractClasses.push(className)
+        } else if (classType === 'type') {
+          if (!struct.types) struct.types = []
+          struct.types.push(className)
+        }
+      }
+    }
+
+    return struct
   }
 }

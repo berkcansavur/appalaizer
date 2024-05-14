@@ -15,5 +15,13 @@ export type FileProperties = {
   content?: string
   dependencies?: Dependencies
   functionalities?: string[]
+  structs?: Structs
   extension?: FILE_EXTENSIONS
+}
+
+export type Structs = {
+  interfaces?: string[]
+  classes?: string[]
+  abstractClasses?: string[]
+  types?: string[]
 }
