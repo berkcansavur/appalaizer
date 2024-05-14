@@ -1,7 +1,7 @@
-import { IFileService } from 'interfaces'
+import { IFileService, IProgrammingFile } from 'interfaces'
 import { Dependencies, DEPENDENCY_TYPES, FileProperties } from '../../constants'
 
-export class JavaScriptFile implements IFileService {
+export class JavaScriptFile implements IFileService, IProgrammingFile {
   private fileContent: string
 
   constructor(fileContent: string) {

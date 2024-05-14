@@ -1,5 +1,5 @@
 import { Languages } from '../constants'
-import { InvalidApiKeyError, BaseError, FileNotFoundException } from '../common/exceptions'
+import { InvalidApiKeyError, FileNotFoundException } from '../common/exceptions'
 import { ConfigLogic, ErrorLogic } from '../common/logic'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -27,18 +27,17 @@ export class Config {
   static getApiKey(): string | null {
     try {
       if (!fs.existsSync(this.apiKeyPath)) {
-        fs.writeFileSync(this.apiKeyPath,'')
+        fs.writeFileSync(this.apiKeyPath, '')
       }
       const content = fs.readFileSync(this.apiKeyPath, 'utf8')
       if (!ConfigLogic.isApiKeyValid(content)) {
-        return null;
+        return null
       } else {
         const matches = content.match(/openapiKey = '(.*)'/)
         return matches ? matches[1] : null
       }
     } catch (error) {
-      if (ErrorLogic.isNoEntityError(error)
-      ) {
+      if (ErrorLogic.isNoEntityError(error)) {
         if (ErrorLogic.isFileNotFound(error)) {
           throw new FileNotFoundException(this.apiKeyPath)
         }

@@ -3,7 +3,7 @@ import { ProjectTreeService } from './project-tree.service'
 import * as path from 'path'
 import { GptService } from './gpt.service'
 import { AnalysisService } from './analysis.service'
-import { DefaultFileService } from './default-file.service'
+import { BaseFileService } from './files/base-file.service'
 import { PromptService } from './prompt.service'
 import { Config, ConfigSetup } from '../config'
 import { ErrorLogic, ProcessCouldNotSucceed } from '../common'
@@ -57,7 +57,7 @@ export class CommandLineService {
     const analysisService = new AnalysisService(
       gptService,
       new ProjectTreeService(),
-      new DefaultFileService(),
+      new BaseFileService(),
       new PromptService(gptService),
     )
 

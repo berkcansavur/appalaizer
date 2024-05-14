@@ -1,4 +1,4 @@
-import { TypeScriptFile, JavaScriptFile } from '../services'
+import { TypeScriptFile, JavaScriptFile, DefaultFile } from '../services'
 import { FILE_EXTENSIONS } from '../constants'
 import { IFileService } from 'interfaces'
 
@@ -16,7 +16,8 @@ export class FileServiceFactory {
     if (FileHandler) {
       return new FileHandler(fileContent)
     } else {
-      throw new Error(`Unsupported file extension: ${fileExtension}`)
+      const FileHandler = DefaultFile
+      return new FileHandler(fileContent)
     }
   }
 }

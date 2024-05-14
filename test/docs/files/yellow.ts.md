@@ -1,5 +1,0 @@
-### Content
-```
-export class Yellow {}
-```
-

@@ -1,6 +1,6 @@
 export * from './command-line.service'
 export * from './analysis.service'
-export * from './default-file.service'
+export * from './files/base-file.service'
 export * from './folder.service'
 export * from './gpt.service'
 export * from './markdown-file.service'

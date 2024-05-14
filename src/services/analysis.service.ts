@@ -2,7 +2,7 @@ import { GptService } from 'services/gpt.service'
 import * as fs from 'fs'
 import * as path from 'path'
 import { ProjectTreeService } from 'services/project-tree.service'
-import { DefaultFileService } from 'services/default-file.service'
+import { BaseFileService } from 'services/files'
 import { PromptService } from './prompt.service'
 import { ChatCompletionMessageParam } from 'openai/resources'
 import { ignoreList } from '../constants'
@@ -17,7 +17,7 @@ export class AnalysisService {
   constructor(
     private readonly gptService: GptService,
     private readonly projectTreeService: ProjectTreeService,
-    private readonly defaultFileService: DefaultFileService,
+    private readonly defaultFileService: BaseFileService,
     private readonly promptService: PromptService,
   ) {}
 

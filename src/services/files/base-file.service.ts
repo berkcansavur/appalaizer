@@ -1,11 +1,11 @@
-import { FileHandler } from '../interfaces/file-handler.interface'
+import { FileHandler } from '../../interfaces/file-handler.interface'
 import * as fs from 'fs'
-import { MarkdownService } from './markdown-file.service'
-import { ErrorLogic, ProcessCouldNotSucceed } from '../common'
-import { FileServiceFactory } from '../factories/file-service.factory'
-import { FileProperties } from '../constants'
+import { MarkdownService } from '../markdown-file.service'
+import { ErrorLogic, ProcessCouldNotSucceed } from '../../common'
+import { FileServiceFactory } from '../../factories/file-service.factory'
+import { FileProperties } from '../../constants'
 
-export class DefaultFileService implements FileHandler {
+export class BaseFileService implements FileHandler {
   private readonly markdownService: MarkdownService
 
   constructor() {
@@ -91,12 +91,7 @@ export class DefaultFileService implements FileHandler {
     const content = fs.readFileSync(filePath, 'utf-8')
     const fileProperties = this.getFileProperties(content, filePath)
     console.log('File Properties: ', JSON.stringify(fileProperties))
-    let markdown
-    if (fileProperties) {
-      markdown = this.formatFileProperties(fileProperties)
-    } else {
-      markdown = `Content:\n\`\`\`\n${content}\n\`\`\``
-    }
+    const markdown = this.formatFileProperties(fileProperties)
 
     console.log('Markdown: ', markdown)
     this.markdownService.generateMarkdown(filePath, outputDir, markdown)
