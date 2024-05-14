@@ -92,11 +92,13 @@ export class TypeScriptFile implements IFileService, IProgrammingFile {
         const asyncKeyword = match[1] || ''
         const functionKeyword = match[2] || ''
         const functionName = match[3]
+        if (functionName !== 'constructor') {
+          const functionType = `${asyncKeyword}${functionKeyword}`.trim()
+          const functionDeclaration = `${functionType} ${functionName}`
 
-        const functionType = `${asyncKeyword}${functionKeyword}`.trim()
-        const functionDeclaration = `${functionType} ${functionName}`
-
-        functionDeclarations.add(functionDeclaration)
+          functionDeclarations.add(functionDeclaration)
+        }
+        continue
       }
     }
     return [...functionDeclarations]
@@ -117,9 +119,6 @@ export class TypeScriptFile implements IFileService, IProgrammingFile {
     const functionalities = this.getFunctionalities()
     const fileProperties: FileProperties = {}
     const structs = this.getClassNamesAndTypes()
-    console.log(`dependencies:  ${JSON.stringify(dependencies)}`)
-    console.log(`functionalities:  ${JSON.stringify(functionalities)}`)
-    console.log(`fileContent:  ${JSON.stringify(this.fileContent)}`)
 
     if (
       dependencies.constructorDependencies.length > 0 ||

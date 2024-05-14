@@ -1,9 +1,18 @@
 import { ChatCompletionMessageParam } from 'openai/resources'
 import {
+  ABSTRACT_CLASS_PROMPT_PREFIX,
+  analyzePrompt,
+  CLASS_PROMPT_PREFIX,
+  constructorPrompt,
+  extensionPrompt,
   FILE_EXTENSIONS,
   FileProperties,
+  importsPrompt,
+  INTERFACE_PROMPT_PREFIX,
   Languages,
   PROMPTS,
+  STRUCTURES_PROMPT,
+  TYPE_PROMPT_PREFIX,
 } from '../constants'
 import { TranslationService } from './translation.service'
 import { Config } from '../config'
@@ -21,10 +30,6 @@ export class PromptService extends TranslationService {
     return `First, create your answer in ${this.language} language. Below is one of the files included in a project: \n${fileContent}\n\n`
   }
 
-  private generateImportsPrompt(importDependenciesText: string): string {
-    return `and here you will find a list of imported dependencies: ${importDependenciesText}.`
-  }
-
   private generateContentPrompt(content: string): string {
     return `Below is a file with the content: \n${content}\n\n`
   }
@@ -38,8 +43,16 @@ export class PromptService extends TranslationService {
 
     let constructorDependenciesText = ''
     let importDependenciesText = ''
+    let functionalitiesText = ''
     let fileContentText = ''
     let fileExtensionText = ''
+
+    if (functionalities && functionalities.length > 0) {
+      functionalitiesText = functionalities.join(', ')
+    } else {
+      constructorDependenciesText = 'no functionalities'
+    }
+
     if (constructorDependencies && constructorDependencies.length > 0) {
       constructorDependenciesText = constructorDependencies.join(', ')
     } else {
@@ -64,33 +77,30 @@ export class PromptService extends TranslationService {
       fileExtensionText = 'no extension'
     }
     const fileContentPrompt = this.generateContentPrompt(fileContentText)
-    const fileExtensionPrompt =
-      this.generateFileExtensionPrompt(fileExtensionText)
-    const constructorDependenciesPrompt = this.generateConstructorPrompt(
+    const fileExtensionPrompt = extensionPrompt(fileExtensionText)
+    const constructorDependenciesPrompt = constructorPrompt(
       constructorDependenciesText,
     )
-    const importDependenciesPrompt = this.generateImportsPrompt(
-      importDependenciesText,
-    )
+    const importDependenciesPrompt = importsPrompt(importDependenciesText)
 
     let structPrompt = ''
     if (structs) {
       const { interfaces, classes, abstractClasses, types } = structs
-      structPrompt = `And this file contains the following structures:\n`
+      structPrompt = `${STRUCTURES_PROMPT}\n`
       if (interfaces && interfaces.length > 0) {
-        structPrompt += `- Interfaces: ${interfaces.join(', ')}\n`
+        structPrompt += `${INTERFACE_PROMPT_PREFIX} ${interfaces.join(', ')}\n`
       }
       if (classes && classes.length > 0) {
-        structPrompt += `- Classes: ${classes.join(', ')}\n`
+        structPrompt += `${CLASS_PROMPT_PREFIX} ${classes.join(', ')}\n`
       }
       if (abstractClasses && abstractClasses.length > 0) {
-        structPrompt += `- Abstract Classes: ${abstractClasses.join(', ')}\n`
+        structPrompt += `${ABSTRACT_CLASS_PROMPT_PREFIX} ${abstractClasses.join(', ')}\n`
       }
       if (types && types.length > 0) {
-        structPrompt += `- Types: ${types.join(', ')}\n`
+        structPrompt += `${TYPE_PROMPT_PREFIX} ${types.join(', ')}\n`
       }
     }
-    const analysisPrompt = `Please analyze these dependencies along with the functionalities: ${functionalities} `
+    const analysisPrompt = analyzePrompt(functionalitiesText)
     const improvementsPrompt = `and share with me any possible improvements considering the overall structure of the code block.`
 
     return [

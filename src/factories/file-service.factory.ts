@@ -12,7 +12,6 @@ export class FileServiceFactory {
     }
 
     const FileHandler = fileHandlers[fileExtension]
-    console.log(`filePath:  ${JSON.stringify(FileHandler)}`)
     if (FileHandler) {
       return new FileHandler(fileContent)
     } else {
