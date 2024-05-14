@@ -1,0 +1,5 @@
+### Content
+```
+export class Yellow {}
+```
+

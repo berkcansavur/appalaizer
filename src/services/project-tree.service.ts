@@ -35,7 +35,7 @@ export class ProjectTreeService {
   }
 
   createMap(inputPath: string): Array<DirectoryInfo> {
-    let map: DirectoryInfo[] = []
+    const map: DirectoryInfo[] = []
     const traverseDirectory = (currentPath: string) => {
       const items = fs.readdirSync(currentPath, { withFileTypes: true })
       items.forEach((item) => {

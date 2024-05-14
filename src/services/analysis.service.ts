@@ -9,7 +9,7 @@ import { ignoreList } from '../constants'
 import {
   ErrorLogic,
   FolderNotFoundException,
-  ProcessCouldNotSucced,
+  ProcessCouldNotSucceed,
   RequestFailedException,
 } from '../common'
 
@@ -28,7 +28,7 @@ export class AnalysisService {
       console.log('Project tree is generated and markdown files are created.')
       await this.analyzeFilesInOutputDirectory(outputDir)
     } catch (error) {
-      throw new ProcessCouldNotSucced(
+      throw new ProcessCouldNotSucceed(
         'Creating project tree',
         ErrorLogic.errorProps(error),
       )
@@ -77,7 +77,7 @@ export class AnalysisService {
       }
       console.log('Analysis of project files is done successfully.')
     } catch (error) {
-      throw new ProcessCouldNotSucced(
+      throw new ProcessCouldNotSucceed(
         'Analyzing project files',
         ErrorLogic.errorProps(error),
       )

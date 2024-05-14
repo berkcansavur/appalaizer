@@ -6,7 +6,7 @@ import { AnalysisService } from './analysis.service'
 import { DefaultFileService } from './default-file.service'
 import { PromptService } from './prompt.service'
 import { Config, ConfigSetup } from '../config'
-import { ErrorLogic, ProcessCouldNotSucced } from '../common'
+import { ErrorLogic, ProcessCouldNotSucceed } from '../common'
 
 export class CommandLineService {
   constructor() {}
@@ -31,10 +31,10 @@ export class CommandLineService {
     }
   }
   async setApiKey() {
-    const gptService = new GptService();
-    const configSetup =  new ConfigSetup(gptService)
-    await configSetup.setApiKeyFromTerminal();
-    configSetup.closeReadline();
+    const gptService = new GptService()
+    const configSetup = new ConfigSetup(gptService)
+    await configSetup.setApiKeyFromTerminal()
+    configSetup.closeReadline()
   }
   runGeneratedProjectTree() {
     const inputPath = process.cwd()
@@ -64,10 +64,10 @@ export class CommandLineService {
     try {
       await analysisService.analyzeProjectFiles(projectPath)
     } catch (error) {
-      throw new ProcessCouldNotSucced(
+      throw new ProcessCouldNotSucceed(
         'Analyzing project files',
         ErrorLogic.errorProps(error),
-      ) 
+      )
     } finally {
       configSetup.closeReadline()
     }

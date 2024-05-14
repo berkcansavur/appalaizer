@@ -1,5 +1,5 @@
 import { ChatCompletionMessageParam } from 'openai/resources'
-import { PROMPTS } from '../constants'
+import { Languages, PROMPTS } from '../constants'
 import { TranslationService } from './translation.service'
 import { Config } from '../config'
 import { GptService } from './gpt.service'
@@ -9,21 +9,16 @@ export class PromptService extends TranslationService {
   constructor(gptService: GptService) {
     super(gptService)
   }
-  async generateFileAnalyzePrompt(fileContent: string): Promise<string[]> {
-    const enterencePromt = this.prepareContentPrompt(fileContent)
-    const promtsArray: string[] = [
-      enterencePromt + PROMPTS.FileAnalyze,
-      PROMPTS.DependencyAnalyze,
-      PROMPTS.ImprovementSuggestions,
-      PROMPTS.GeneralAnalyzeFromGPTConversation,
-    ]
-    if (this.language !== 'English') {
-      return await this.translatePrompts(promtsArray, this.language)
-    }
-    return promtsArray
+  private generateInitPrompt(fileContent: string): string {
+    return `First, create your answer in ${this.language} language. Below is one of the files included in a project: \n${fileContent}\n\n`
   }
-  preparePromptForGpt(promts: string[]): ChatCompletionMessageParam[] {
-    return promts.map((prompt) => {
+
+  private prepareContentPrompt(fileContent: string): string {
+    return this.generateInitPrompt(fileContent)
+  }
+
+  preparePromptForGpt(prompts: string[]): ChatCompletionMessageParam[] {
+    return prompts.map((prompt) => {
       const formattedPrompt: ChatCompletionMessageParam = {
         role: 'user',
         content: prompt,
@@ -31,7 +26,18 @@ export class PromptService extends TranslationService {
       return formattedPrompt
     })
   }
-  prepareContentPrompt(fileContent: string): string {
-    return `Öncelikle cevabını, ${this.language} dilinde oluştur. Aşağıda bir projenin içerdiği dosyalardan birisi mevcut: :\n${fileContent}\n\n `
+
+  async generateFileAnalyzePrompt(fileContent: string): Promise<string[]> {
+    const entrancePrompt = this.prepareContentPrompt(fileContent)
+    const promptsArray: string[] = [
+      entrancePrompt + PROMPTS.FileAnalyze,
+      PROMPTS.DependencyAnalyze,
+      PROMPTS.ImprovementSuggestions,
+      PROMPTS.GeneralAnalyzeFromGPTConversation,
+    ]
+    if (this.language !== Languages.English) {
+      return await this.translatePrompts(promptsArray, this.language)
+    }
+    return promptsArray
   }
 }

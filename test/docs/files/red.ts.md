@@ -1,3 +1,5 @@
+### Content
+```
 import '../props'
 export class Red {
   private fileName: string
@@ -22,3 +24,21 @@ export class Red {
     this.filePath = filePath
   }
 }
+
+```
+
+### Dependencies
+#### Constructor Dependencies
+fileName
+filePath
+
+#### Imported Dependencies
+'../props'
+
+### Functionalities
+-  constructor
+-  getFileName
+-  setFileName
+-  getFilePath
+-  setFilePath
+
