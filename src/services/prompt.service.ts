@@ -5,18 +5,22 @@ import {
   CLASS_PROMPT_PREFIX,
   constructorPrompt,
   extensionPrompt,
+  featurePrompt,
   FILE_EXTENSIONS,
   FileProperties,
   importsPrompt,
+  IMPROVEMENTS_PROMPT_PREFIX,
   INTERFACE_PROMPT_PREFIX,
+  investigationPrompt,
   Languages,
   PROMPTS,
   STRUCTURES_PROMPT,
   TYPE_PROMPT_PREFIX,
+  userContentPrompt,
 } from '../constants'
 import { TranslationService } from './translation.service'
 import { Config } from '../config'
-import { GptService } from './gpt.service'
+import { GptService } from '../services'
 import { BaseFileService } from './files'
 
 export class PromptService extends TranslationService {
@@ -101,7 +105,7 @@ export class PromptService extends TranslationService {
       }
     }
     const analysisPrompt = analyzePrompt(functionalitiesText)
-    const improvementsPrompt = `and share with me any possible improvements considering the overall structure of the code block.`
+    const improvementsPrompt = IMPROVEMENTS_PROMPT_PREFIX
 
     return [
       fileContentPrompt,
@@ -112,16 +116,6 @@ export class PromptService extends TranslationService {
       analysisPrompt,
       improvementsPrompt,
     ]
-  }
-
-  private generateFileExtensionPrompt(extension: string): string {
-    return `In this file, which has a ${extension} extension, `
-  }
-
-  private generateConstructorPrompt(
-    constructorDependenciesText: string,
-  ): string {
-    return `you will find a list of constructor dependencies: ${constructorDependenciesText}.`
   }
 
   preparePromptForGpt(prompts: string[]): ChatCompletionMessageParam[] {
@@ -142,7 +136,6 @@ export class PromptService extends TranslationService {
       prompts = this.generateProgrammingFileEntrancePrompt(
         baseFileService.getFileProperties(fileContent, fileExtension),
       )
-      console.log('Condition for fileExtension is provided.')
     }
     const entrancePrompt = this.generateInitPrompt(fileContent)
     prompts = [
@@ -151,6 +144,26 @@ export class PromptService extends TranslationService {
       PROMPTS.ImprovementSuggestions,
       PROMPTS.GeneralAnalyzeFromGPTConversation,
     ]
+    if (this.language !== Languages.English) {
+      return await this.translatePrompts(prompts, this.language)
+    }
+    return prompts
+  }
+  private formatFeaturePrompt(
+    fileContent: string,
+    userContent: string,
+  ): string[] {
+    const investigationPromptText = investigationPrompt(fileContent)
+    const userContentPromptText = userContentPrompt(userContent)
+    const featurePromptText = featurePrompt(this.language)
+
+    return [investigationPromptText, userContentPromptText, featurePromptText]
+  }
+  async generateFeaturePrompt(
+    fileContent: string,
+    userContent: string,
+  ): Promise<string[]> {
+    const prompts = this.formatFeaturePrompt(fileContent, userContent)
     if (this.language !== Languages.English) {
       return await this.translatePrompts(prompts, this.language)
     }

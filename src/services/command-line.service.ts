@@ -5,8 +5,9 @@ import { GptService } from './gpt.service'
 import { AnalysisService } from './analysis.service'
 import { BaseFileService } from './files/base-file.service'
 import { PromptService } from './prompt.service'
-import { Config, ConfigSetup } from '../config'
+import { Config, ConfigSetup, FeatureConfigSetup } from '../config'
 import { ErrorLogic, ProcessCouldNotSucceed } from '../common'
+import { FeatureService } from './feature.service'
 
 export class CommandLineService {
   constructor() {}
@@ -24,6 +25,9 @@ export class CommandLineService {
         break
       case '--api-key':
         await this.setApiKey()
+        break
+      case '--feature':
+        await this.runFeature()
         break
       default:
         console.log(`"${command}" is not a recognized command.`)
@@ -95,5 +99,45 @@ export class CommandLineService {
       const padding = ' '.repeat(longestCommandLength - command.length)
       console.log(`${command}:${padding}  ${description}`)
     })
+  }
+
+  async runFeature() {
+    try {
+      const inputPath = process.cwd()
+      const gptService = new GptService()
+      const configSetup = new ConfigSetup(gptService)
+      const baseFileService = new BaseFileService()
+      const promptService = new PromptService(gptService, baseFileService)
+      const featureConfigSetup = new FeatureConfigSetup(baseFileService)
+      if (Config.getApiKey() === null) {
+        await configSetup.setApiKeyFromTerminal()
+      }
+
+      await configSetup.setAIEngineFromTerminal()
+      await configSetup.setAnalyzeLanguageFromTerminal()
+      const fileName =
+        await featureConfigSetup.getFileNameFromTerminal(inputPath)
+      await featureConfigSetup.setFeatureContentFromTerminal()
+
+      const featureService = new FeatureService(
+        baseFileService,
+
+        promptService,
+        gptService,
+      )
+      const generatedFeature = await featureService.handleFeatureGeneration(
+        inputPath,
+        fileName,
+      )
+      let isChecked = false
+      if (generatedFeature) {
+        isChecked = await featureConfigSetup.commitChangesCheckFromTerminal()
+      }
+      if (isChecked) {
+        await featureService.commitChangesToFile(inputPath, generatedFeature)
+      }
+    } catch (error) {
+      console.error('An error occurred while generating feature:', error)
+    }
   }
 }
