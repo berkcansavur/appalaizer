@@ -134,9 +134,7 @@ export class CommandLineService {
       }
       if (isChecked) {
         const fileRealPath = path.join(inputPath, fileName)
-        const formattedFeature =
-          baseFileService.removeCodeBlocks(generatedFeature)
-        await featureService.commitChangesToFile(fileRealPath, formattedFeature)
+        await featureService.commitChangesToFile(fileRealPath, generatedFeature)
       }
     } catch (error) {
       console.error('An error occurred while generating feature:', error)
