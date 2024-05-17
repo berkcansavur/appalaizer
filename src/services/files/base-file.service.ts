@@ -4,6 +4,7 @@ import { MarkdownService } from '../markdown-file.service'
 import { ErrorLogic, ProcessCouldNotSucceed } from '../../common'
 import { FileServiceFactory } from '../../factories/file-service.factory'
 import { FileProperties } from '../../constants'
+import * as path from 'path'
 
 export class BaseFileService implements FileHandler {
   private readonly markdownService: MarkdownService
@@ -103,8 +104,41 @@ export class BaseFileService implements FileHandler {
     return formattedContent
   }
 
+  readFile(filePath: string): string {
+    return fs.readFileSync(filePath, 'utf-8')
+  }
+
+  getFileContent(filePath: string): string {
+    try {
+      const fileContent = fs.readFileSync(filePath, 'utf-8')
+      return fileContent
+    } catch (error) {
+      console.error('An error occurred while reading file content:', error)
+      return ''
+    }
+  }
+
+  listFilesInDirectory(directoryPath: string): string[] {
+    try {
+      const files = fs.readdirSync(directoryPath)
+
+      const filteredFiles = files.filter((file) => {
+        const filePath = path.join(directoryPath, file)
+        return fs.statSync(filePath).isFile()
+      })
+
+      return filteredFiles
+    } catch (error) {
+      console.error(
+        'An error occurred while listing files in directory:',
+        error,
+      )
+      return []
+    }
+  }
+
   handleFile(filePath: string, outputDir: string): void {
-    const content = fs.readFileSync(filePath, 'utf-8')
+    const content = this.readFile(filePath)
     const fileExtension = this.getFileExtension(filePath)
     const fileProperties = this.getFileProperties(content, fileExtension)
     const markdown = this.formatFileProperties(fileProperties)

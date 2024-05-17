@@ -30,7 +30,10 @@ export const COMMAND_DESCRIPTIONS: { [command: string]: string } = {
   '--analyze':
     'creates md files and generates documentation for the specified files with openai',
   '--api-key': 'sets openai api key',
+  '--feature':
+    'makes feature development on specified file and properly described issue',
 }
+export const POSITIVE_ANSWERS = ['yes', 'y', 'YES', 'Y', 'OK', 'ok']
 
 export enum FILE_EXTENSIONS {
   TS = '.ts',
