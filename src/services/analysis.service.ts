@@ -1,9 +1,11 @@
-import { GptService } from 'services/gpt.service'
 import * as fs from 'fs'
 import * as path from 'path'
-import { ProjectTreeService } from 'services/project-tree.service'
-import { BaseFileService } from 'services/files'
-import { PromptService } from './prompt.service'
+import {
+  GptService,
+  ProjectTreeService,
+  BaseFileService,
+  PromptService,
+} from '../services'
 import { ChatCompletionMessageParam } from 'openai/resources'
 import { ignoreList } from '../constants'
 import {
@@ -17,7 +19,7 @@ export class AnalysisService {
   constructor(
     private readonly gptService: GptService,
     private readonly projectTreeService: ProjectTreeService,
-    private readonly defaultFileService: BaseFileService,
+    private readonly baseFileService: BaseFileService,
     private readonly promptService: PromptService,
   ) {}
 
@@ -68,7 +70,7 @@ export class AnalysisService {
             const analysisResult = await this.analyzeFile(filePath)
             console.log(`File analysis of ${filePath} direcory is successful`)
             console.log(`Analysis writing to the file ${filePath}.`)
-            await this.defaultFileService.writeAnalysisResultToFile(
+            await this.baseFileService.writeAnalysisResultToFile(
               filePath,
               analysisResult,
             )

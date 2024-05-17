@@ -58,3 +58,9 @@ export class OpenAIException extends BaseError {
     this.name = 'OpenAI error'
   }
 }
+export class UnsupportedProgrammingLanguageException extends BaseError {
+  constructor(message: string) {
+    super(message)
+    this.name = 'Unsupported programming language error'
+  }
+}
