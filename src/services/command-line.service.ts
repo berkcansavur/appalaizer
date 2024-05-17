@@ -103,11 +103,11 @@ export class CommandLineService {
   }
 
   async runFeature() {
+    const gptService = new GptService()
+    const baseFileService = new BaseFileService()
+    const configSetup = new ConfigSetup(gptService, baseFileService)
     try {
       const inputPath = process.cwd()
-      const gptService = new GptService()
-      const baseFileService = new BaseFileService()
-      const configSetup = new ConfigSetup(gptService, baseFileService)
       const promptService = new PromptService(gptService, baseFileService)
       if (Config.getApiKey() === null) {
         await configSetup.setApiKeyFromTerminal()
@@ -120,7 +120,6 @@ export class CommandLineService {
 
       const featureService = new FeatureService(
         baseFileService,
-
         promptService,
         gptService,
       )
@@ -138,6 +137,8 @@ export class CommandLineService {
       }
     } catch (error) {
       console.error('An error occurred while generating feature:', error)
+    } finally {
+      configSetup.closeReadline()
     }
   }
 }
