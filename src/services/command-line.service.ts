@@ -5,7 +5,7 @@ import { GptService } from './gpt.service'
 import { AnalysisService } from './analysis.service'
 import { BaseFileService } from './files/base-file.service'
 import { PromptService } from './prompt.service'
-import { Config, ConfigSetup, FeatureConfigSetup } from '../config'
+import { Config, ConfigSetup } from '../config'
 import { ErrorLogic, ProcessCouldNotSucceed } from '../common'
 import { FeatureService } from './feature.service'
 
@@ -36,7 +36,8 @@ export class CommandLineService {
   }
   async setApiKey() {
     const gptService = new GptService()
-    const configSetup = new ConfigSetup(gptService)
+    const baseFileService = new BaseFileService()
+    const configSetup = new ConfigSetup(gptService, baseFileService)
     await configSetup.setApiKeyFromTerminal()
     configSetup.closeReadline()
   }
@@ -49,15 +50,15 @@ export class CommandLineService {
     console.log('Project tree generated successfully.')
   }
   async analyzeProjectFiles() {
-    const configSetup = new ConfigSetup(new GptService())
+    const baseFileService = new BaseFileService()
+    const gptService = new GptService()
+    const configSetup = new ConfigSetup(gptService, baseFileService)
     if (Config.getApiKey() === null) {
       await configSetup.setApiKeyFromTerminal()
     }
 
     await configSetup.setAIEngineFromTerminal()
     await configSetup.setAnalyzeLanguageFromTerminal()
-    const gptService = new GptService()
-    const baseFileService = new BaseFileService()
     const projectPath = process.cwd()
     const analysisService = new AnalysisService(
       gptService,
@@ -105,19 +106,17 @@ export class CommandLineService {
     try {
       const inputPath = process.cwd()
       const gptService = new GptService()
-      const configSetup = new ConfigSetup(gptService)
       const baseFileService = new BaseFileService()
+      const configSetup = new ConfigSetup(gptService, baseFileService)
       const promptService = new PromptService(gptService, baseFileService)
-      const featureConfigSetup = new FeatureConfigSetup(baseFileService)
       if (Config.getApiKey() === null) {
         await configSetup.setApiKeyFromTerminal()
       }
 
       await configSetup.setAIEngineFromTerminal()
       await configSetup.setAnalyzeLanguageFromTerminal()
-      const fileName =
-        await featureConfigSetup.getFileNameFromTerminal(inputPath)
-      await featureConfigSetup.setFeatureContentFromTerminal()
+      const fileName = await configSetup.getFileNameFromTerminal(inputPath)
+      await configSetup.setFeatureContentFromTerminal()
 
       const featureService = new FeatureService(
         baseFileService,
@@ -131,10 +130,13 @@ export class CommandLineService {
       )
       let isChecked = false
       if (generatedFeature) {
-        isChecked = await featureConfigSetup.commitChangesCheckFromTerminal()
+        isChecked = await configSetup.commitChangesCheckFromTerminal()
       }
       if (isChecked) {
-        await featureService.commitChangesToFile(inputPath, generatedFeature)
+        const fileRealPath = path.join(inputPath, fileName)
+        const formattedFeature =
+          baseFileService.removeCodeBlocks(generatedFeature)
+        await featureService.commitChangesToFile(fileRealPath, formattedFeature)
       }
     } catch (error) {
       console.error('An error occurred while generating feature:', error)
