@@ -3,7 +3,7 @@ import { FILE_EXTENSIONS } from '../constants'
 import { IFileService } from 'interfaces'
 
 export class FileServiceFactory {
-  static getFileHandler(fileExtension: string, fileContent: string) {
+  static getHandler(fileExtension: string, fileContent: string) {
     const fileHandlers: {
       [extension: string]: new (fileContent: string) => IFileService
     } = {

@@ -70,7 +70,7 @@ export class AnalysisService {
             const analysisResult = await this.analyzeFile(filePath)
             console.log(`File analysis of ${filePath} direcory is successful`)
             console.log(`Analysis writing to the file ${filePath}.`)
-            await this.baseFileService.writeAnalysisResultToFile(
+            await this.baseFileService.writeAnalysisResult(
               filePath,
               analysisResult,
             )
@@ -87,7 +87,7 @@ export class AnalysisService {
   }
 
   private async analyzeFile(filePath: string): Promise<string> {
-    const fileContent = await fs.promises.readFile(filePath, 'utf-8')
+    const fileContent = await fs.promises.read(filePath, 'utf-8')
     const prompts =
       await this.promptService.generateFileAnalyzePrompt(fileContent)
     const formattedPromts = this.promptService.preparePromptForGpt(prompts)

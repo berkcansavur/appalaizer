@@ -16,10 +16,10 @@ export class ProjectTreeService {
         outputDir,
         isFolder ? 'folders' : 'files',
       )
-      const fileHandler = FileHandlerFactory.getFileHandler(
+      const fileHandler = FileHandlerFactory.getHandler(
         isFolder ? 'folder' : 'file',
       )
-      fileHandler.handleFile(realPath, outputItemPath)
+      fileHandler.handle(realPath, outputItemPath)
     })
   }
 

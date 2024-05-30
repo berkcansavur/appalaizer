@@ -130,7 +130,7 @@ export class PromptService extends TranslationService {
 
   async generateFileAnalyzePrompt(fileContent: string): Promise<string[]> {
     const { baseFileService } = this
-    const fileExtension = baseFileService.getFileExtension(fileContent)
+    const fileExtension = baseFileService.getExtension(fileContent)
     let prompts: string[]
     if (Object.values(FILE_EXTENSIONS).toString().includes(fileExtension)) {
       prompts = this.generateProgrammingFileEntrancePrompt(

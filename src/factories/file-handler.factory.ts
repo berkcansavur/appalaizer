@@ -3,7 +3,7 @@ import { BaseFileService } from '../services/files/base-file.service'
 import { FolderHandler } from '../services/folder.service'
 
 export class FileHandlerFactory {
-  static getFileHandler(fileType: string): FileHandler {
+  static getHandler(fileType: string): FileHandler {
     if (fileType === 'folder') {
       return new FolderHandler()
     } else {

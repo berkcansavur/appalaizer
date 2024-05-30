@@ -5,6 +5,7 @@ import { ErrorLogic, ProcessCouldNotSucceed } from '../../common'
 import { FileServiceFactory } from '../../factories/file-service.factory'
 import { FileProperties } from '../../constants'
 import * as path from 'path'
+import { FileLogic } from 'logic/file'
 
 export class BaseFileService implements FileHandler {
   private readonly markdownService: MarkdownService
@@ -13,13 +14,13 @@ export class BaseFileService implements FileHandler {
     this.markdownService = new MarkdownService()
   }
 
-  async writeAnalysisResultToFile(
+  async writeAnalysisResult(
     filePath: string,
     analysisResult: string,
   ): Promise<void> {
     try {
       const fileContent = fs.readFileSync(filePath, 'utf-8')
-      const updatedContent = this.updateFileContent(fileContent, analysisResult)
+      const updatedContent = this.updateContent(fileContent, analysisResult)
       fs.writeFileSync(filePath, updatedContent, 'utf-8')
       console.log(`Analysis successfully saved to the file: ${filePath}`)
     } catch (error) {
@@ -30,29 +31,23 @@ export class BaseFileService implements FileHandler {
     }
   }
 
-  private updateFileContent(
-    fileContent: string,
-    analysisResult: string,
-  ): string {
+  private updateContent(fileContent: string, analysisResult: string): string {
     const documentationHeader = 'Documentation:'
     const updatedContent = `${documentationHeader}\n${analysisResult}\n\n${fileContent}`
     return updatedContent
   }
 
   getFileProperties(content: string, fileExtension: string): FileProperties {
-    const fileService = FileServiceFactory.getFileHandler(
-      fileExtension,
-      content,
-    )
+    const fileService = FileServiceFactory.getHandler(fileExtension, content)
     return fileService.getFileProperties()
   }
 
-  getFileExtension(filePath: string): string {
+  getExtension(filePath: string): string {
     const fileExtension = filePath.split('.').pop()?.toLowerCase() || ''
     return `.${fileExtension}`
   }
 
-  formatFileProperties(fileProperties: FileProperties): string {
+  formatProperties(fileProperties: FileProperties): string {
     let formattedContent = ''
 
     if (fileProperties.content) {
@@ -64,11 +59,13 @@ export class BaseFileService implements FileHandler {
       const { constructorDependencies, importedDependencies } =
         fileProperties.dependencies
 
-      if (constructorDependencies.length > 0) {
+      if (
+        FileLogic.isConstructorDependenciesNotEmpty({ constructorDependencies })
+      ) {
         formattedContent += `#### Constructor Dependencies\n${constructorDependencies.join('\n')}\n\n`
       }
 
-      if (importedDependencies.length > 0) {
+      if (FileLogic.isImportedDependenciesNotEmpty({ importedDependencies })) {
         formattedContent += `#### Imported Dependencies\n${importedDependencies.join('\n')}\n\n`
       }
     }
@@ -104,11 +101,11 @@ export class BaseFileService implements FileHandler {
     return formattedContent
   }
 
-  readFile(filePath: string): string {
+  read(filePath: string): string {
     return fs.readFileSync(filePath, 'utf-8')
   }
 
-  getFileContent(filePath: string): string {
+  getContent(filePath: string): string {
     try {
       const fileContent = fs.readFileSync(filePath, 'utf-8')
       return fileContent
@@ -137,11 +134,11 @@ export class BaseFileService implements FileHandler {
     }
   }
 
-  handleFile(filePath: string, outputDir: string): void {
-    const content = this.readFile(filePath)
-    const fileExtension = this.getFileExtension(filePath)
+  handle(filePath: string, outputDir: string): void {
+    const content = this.read(filePath)
+    const fileExtension = this.getExtension(filePath)
     const fileProperties = this.getFileProperties(content, fileExtension)
-    const markdown = this.formatFileProperties(fileProperties)
+    const markdown = this.formatProperties(fileProperties)
     this.markdownService.generateMarkdown(filePath, outputDir, markdown)
   }
 }

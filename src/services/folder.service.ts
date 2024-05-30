@@ -9,7 +9,7 @@ export class FolderHandler implements FileHandler {
     this.markdownService = new MarkdownService()
   }
 
-  handleFile(filePath: string, outputDir: string): void {
+  handle(filePath: string, outputDir: string): void {
     const content = this.createFolderContent(filePath)
     this.markdownService.generateMarkdown(filePath, outputDir, content)
   }

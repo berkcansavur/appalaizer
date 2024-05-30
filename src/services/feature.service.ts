@@ -26,7 +26,7 @@ export class FeatureService {
     const fileRealPath = path.join(inputPath, fileName)
 
     const userContent = FeatureConfig.getFeatureContent()
-    const fileContent = this.fileService.readFile(fileRealPath)
+    const fileContent = this.fileService.read(fileRealPath)
 
     const featurePrompts = await promptService.generateFeaturePrompt(
       fileContent,
@@ -66,6 +66,6 @@ export class FeatureService {
   async commitChangesToFile(filePath: string, aiResult: string): Promise<void> {
     const { fileService } = this
 
-    await fileService.writeAnalysisResultToFile(filePath, aiResult)
+    await fileService.writeAnalysisResult(filePath, aiResult)
   }
 }
